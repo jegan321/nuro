@@ -2,10 +2,15 @@
   "name": "nuro",
   "version": "0.1.1",
   "description": "JavaScrict framework",
+  "main": "build/nuro.js",
   "author": {
     "name": "John Egan"
   },
   "license": "MIT",
+  "files": [
+    "src",
+    "build"
+  ],
   "devDependencies": {
     "esm": "^3.2.25",
     "jest": "^24.9.0",
