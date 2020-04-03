@@ -1,13 +1,13 @@
 const esmImport = require('esm')(module)
-const { createElement, createElementList} = esmImport('../../src/render-helpers.js')
+const { createElement, createElementList } = esmImport('../../src/render-helpers.js')
 
-const $ = function (tag, options, children) {
+const $ = function(tag, options, children) {
   let ctx = {
     components: {}
   }
   return createElement(ctx, tag, options, children)
 }
-const $li = function (val, render) {
+const $li = function(val, render) {
   return createElementList(val, render)
 }
 

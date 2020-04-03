@@ -92,7 +92,7 @@ function compileElement(vNode) {
         code += ','
       }
     })
-    code +=']'
+    code += ']'
   }
 
   code += ')'

@@ -75,7 +75,7 @@ function createVNode(node) {
 
 function createChildren(children) {
   let vChildren = []
-  Array.prototype.forEach.call(children, function (child) {
+  Array.prototype.forEach.call(children, function(child) {
     let vNode = createVNode(child)
     // Skip comments when creating virtual DOM
     if (vNode.type === 'comment') {

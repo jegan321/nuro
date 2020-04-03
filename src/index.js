@@ -50,8 +50,7 @@ Nuro.create = function(definition) {
 
 Nuro.register = addGlobalComponent
 
-
-Nuro.plugin = function (plugin, options) {
+Nuro.plugin = function(plugin, options) {
   if (plugin.install) {
     plugin.install(Nuro, Component, options)
   } else {

@@ -145,10 +145,10 @@ Component.prototype.mount = function(node, args, slotContent) {
   let ctx = this.__ctx
 
   // After adding ctx param
-  let $ = function (tag, options, children) {
+  let $ = function(tag, options, children) {
     return createElement(ctx, tag, options, children)
   }
-  let $li = function (val, render) {
+  let $li = function(val, render) {
     return createElementList(val, render)
   }
 
@@ -169,7 +169,6 @@ Component.prototype.mount = function(node, args, slotContent) {
 
   // Make the changes to the DOM
   this.__ctx.rootNode = patch(node)
-
 
   this.__ctx.rootNode._nuro.componentName = this.name
   this.__ctx.rootNode._nuro.componentInstance = this

@@ -1,4 +1,3 @@
-
 export function diff(vOldRootNode, vNewRootNode, buildComponent) {
   return diffNodes(vOldRootNode, vNewRootNode)
 
