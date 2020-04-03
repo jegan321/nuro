@@ -13,12 +13,12 @@
   ],
   "devDependencies": {
     "esm": "^3.2.25",
-    "jest": "^24.9.0",
+    "jest": "^25.2.6",
     "prettier": "1.19.1",
     "rollup": "^1.27.13"
   },
   "scripts": {
-    "format": "prettier --print-width 100 --no-semi false --single-quote true --write \"./**/*.{js,json}\"",
+    "format": "prettier --print-width 100 --no-semi false --single-quote true --write \"./**/*.js\"",
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "test": "npm run build && jest --coverage"
