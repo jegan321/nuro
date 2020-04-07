@@ -8,6 +8,8 @@ import { compile } from './compiler'
 import { createElement, createElementList } from './render-helpers'
 import { getGlobalComponents } from './global-components'
 
+let compileCache = {}
+
 export class Component {
   // TODO: change name to definition
   static _build(name, config, cid, originalArgs = {}) {
@@ -54,20 +56,27 @@ export class Component {
     } else if (config.template) {
       // Template string provided
 
-      // Build virtual DOM node based on the template string
-      let templateDomNode = parseDomNode(config.template)
-      let templateVNode = buildVNode(templateDomNode)
+      if (compileCache[config.template]) {
+        // If template has already been compiled, use the function in the cache
+        instance.__ctx.render = compileCache[config.template]
+      } else {
+        // Build virtual DOM node based on the template string
+        let templateDomNode = parseDomNode(config.template)
+        let templateVNode = buildVNode(templateDomNode)
 
-      // Remove nuro-template attribute so the rendered output won't be
-      // hidden by the CSS rule
-      if (templateVNode.attrs.hasOwnProperty('nuro-template')) {
-        delete templateVNode.attrs['nuro-template']
+        // Remove nuro-template attribute so the rendered output won't be
+        // hidden by the CSS rule
+        if (templateVNode.attrs.hasOwnProperty('nuro-template')) {
+          delete templateVNode.attrs['nuro-template']
+        }
+
+        // Compile template DOM to render function
+        let renderCode = compile(templateVNode)
+        // console.log('\n' + renderCode)
+        instance.__ctx.render = new Function('$', '$li', renderCode)
+        compileCache[config.template] = instance.__ctx.render
       }
 
-      // Compile template DOM to render function
-      let renderCode = compile(templateVNode)
-      // console.log('\n' + renderCode)
-      instance.__ctx.render = new Function('$', '$li', renderCode)
     } else {
       handleError('No template or render property provided')
     }

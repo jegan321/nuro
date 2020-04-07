@@ -11,7 +11,6 @@ addEventListeners()
 
 let Nuro = {}
 
-// TODO: rename config to definition
 Nuro.create = function(definition) {
   definition = clone(definition)
 

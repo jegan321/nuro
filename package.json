@@ -20,7 +20,7 @@
   "scripts": {
     "format": "prettier --print-width 100 --no-semi false --single-quote true --write \"./**/*.js\"",
     "build": "rollup -c",
-    "watch": "rollup -c -w",
+    "start": "rollup -c -w",
     "test": "npm run build && jest --coverage"
   }
 }

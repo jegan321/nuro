@@ -28,7 +28,6 @@ export function diff(vOldRootNode, vNewRootNode, buildComponent) {
     }
 
     if (vOldNode.tag !== vNewNode.tag) {
-      // console.log('tags dont match');
       return node => {
         let componentInstance
         if (node._nuro && node._nuro.componentName === vNewNode.tag) {
