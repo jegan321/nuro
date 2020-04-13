@@ -10,6 +10,7 @@ import { getGlobalComponents } from './global-components'
 
 let compileCache = {}
 
+// TODO: consider changing classes to factory pattern
 export class Component {
   // TODO: change name to definition
   static _build(name, config, cid, originalArgs = {}) {
@@ -86,35 +87,6 @@ export class Component {
     return instance
   }
 
-  static addInstance(componentName, componentDefinition) {
-    if (!Component.instanceMap[componentName]) {
-      Component.instanceMap[componentName] = []
-    }
-    let instances = Component.instanceMap[componentName]
-    let currrentLength = instances.length
-    let cid = componentName + '-' + currrentLength
-    let uninitializedDef = clone(componentDefinition)
-    uninitializedDef.__unitialized = true
-    instances.push(uninitializedDef)
-    return cid
-  }
-
-  static getInstance(cid, originalArgs) {
-    if (cid) {
-      let split = cid.split('-')
-      let index = parseInt(split[split.length - 1])
-      let name = cid.replace('-' + index, '')
-      let map = Component.instanceMap
-      if (map[name] && map[name][index]) {
-        if (map[name][index].__unitialized) {
-          map[name][index] = Component._build(map[name][index], cid, originalArgs)
-        }
-        return map[name][index]
-      } else {
-        handleError("Attempted to get an instance of a component that hasn't been added yet")
-      }
-    }
-  }
 }
 
 /**

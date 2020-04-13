@@ -35,16 +35,6 @@ function createVNode(node) {
     vNode.renderEach = renderEach
     vNode.renderIf = renderIf
 
-    // // Check if a child component exists with this name
-    // if (ctx.components) {
-    //   let componentDef = ctx.components[vNode.tag]
-    //   if (componentDef) {
-    //     let childCid = componentRepository.addInstance(vNode.tag, componentDef)
-    //     vNode.cid = childCid
-    //     vNode.componentPlaceholder = true
-    //   }
-    // }
-
     vNode.attrs = {}
     vNode.events = {}
     Array.prototype.forEach.call(node.attributes, attr => {

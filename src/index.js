@@ -1,11 +1,9 @@
-import { polyfills } from './polyfills'
 import { hideTemplates } from './hide-templates'
 import { addEventListeners } from './events'
 import { Component } from './component'
 import { handleError, clone, getType } from './utils'
 import { addGlobalComponent } from './global-components'
 
-polyfills()
 hideTemplates()
 addEventListeners()
 
