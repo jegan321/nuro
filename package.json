@@ -1,6 +1,6 @@
 {
   "name": "nuro",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "JavaScript framework",
   "main": "build/nuro.js",
   "author": {
