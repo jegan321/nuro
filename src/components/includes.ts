@@ -1,5 +1,5 @@
 import { NuroError } from '../util/nuro-error'
-import { ComponentClass } from './component'
+import { ComponentClass } from '../api/component'
 
 export const globalIncludes = new Map<string, ComponentClass>()
 

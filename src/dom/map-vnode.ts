@@ -1,4 +1,4 @@
-import { VNode } from './vnode'
+import { VNode } from '../api/vnode'
 
 /**
  * Builds a VNode instance based on a given Element

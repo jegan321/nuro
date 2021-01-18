@@ -2,8 +2,8 @@ import { mapVNode } from './map-vnode'
 import { getComponentProxy, removeEventHandler, setEventHandler } from './node-context'
 import { NuroError } from '../util/nuro-error'
 import { isFunction } from '../util/object-utils'
-import { VNode } from './vnode'
-import { Component } from '../components/component'
+import { VNode } from '../api/vnode'
+import { Component } from '../api/component'
 
 interface MountFunction {
   (

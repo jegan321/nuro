@@ -1,11 +1,8 @@
-import { VNode } from '../dom/vnode'
-import { Component, ComponentClass } from './component'
+import { VNode } from '../api/vnode'
+import { Component, ComponentClass } from '../api/component'
 import { isArray } from '../util/object-utils'
 import { NuroError } from '../util/nuro-error'
-
-export interface CreateElement {
-  (type: string, props?: Record<string, any>, children?: VNode[]): VNode
-}
+import { CreateElement } from '../api/create-element'
 
 export function createElementFactory(includes: Map<string, ComponentClass>): CreateElement {
   return function(

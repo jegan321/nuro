@@ -1,6 +1,6 @@
 import { htmlToDom } from '../dom/html-to-dom'
 import { mapVNode } from '../dom/map-vnode'
-import { VNode } from '../dom/vnode'
+import { VNode } from '../api/vnode'
 
 /**
  * Map of templates and the compiled render method code

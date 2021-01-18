@@ -1,4 +1,4 @@
-import { Component } from '../components/component'
+import { Component } from '../api/component'
 import { NuroError } from '../util/nuro-error'
 
 interface NodeContext {

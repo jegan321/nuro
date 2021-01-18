@@ -1,4 +1,4 @@
-import { VNode } from './vnode'
+import { VNode } from '../api/vnode'
 import { zip } from '../util/object-utils'
 import { NuroError } from '../util/nuro-error'
 import { DomPatcher } from './dom-patcher'
