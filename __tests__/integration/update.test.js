@@ -1,76 +1,191 @@
-const Nuro = require('../../build/nuro.js')
+let Nuro = require('../../build/dist/nuro')
 
-test('update', () => {
-  document.body.innerHTML = `
-        <div id="app"><h1>{{title.toUpperCase()}}</h1><span $for="i in items">{{i}}</span></div>
-    `
-  var app = Nuro.create({
-    root: '#app',
-    data: {
-      title: 'Hello',
-      items: ['first', 'second', 'third']
+test('update state', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class TestComponent {
+    msg = 'test'
+    count = 0
+    handleClick() {
+      this.count++
+      if (this.count === 2) {
+        this.msg = 'clicked twice'
+      }
     }
-  })
+    render($) {
+      return $('button', {id: 'app', count: this.count, '@click': this.handleClick}, [
+        this.msg
+      ])
+    }
+  }
+  Nuro.mount(TestComponent, window.document.querySelector('#target'))
 
-  expect(document.querySelector('#app').innerHTML).toEqual(
-    `<h1>HELLO</h1><span>first</span><span>second</span><span>third</span>`
-  )
-
-  app.update({
-    title: 'Goodbye',
-    items: ['new one']
-  })
-
-  expect(document.querySelector('#app').innerHTML).toEqual(`<h1>GOODBYE</h1><span>new one</span>`)
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app" count="0">test</button>`)
+  document.getElementById('app').click()
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app" count="1">test</button>`)
+  document.getElementById('app').click()
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app" count="2">clicked twice</button>`)
 })
 
-test('update nested object', () => {
-  document.body.innerHTML = `
-        <div id="app">{{name.last}}, {{name.first}} {{age}}</div>
-    `
-  var app = Nuro.create({
-    root: '#app',
-    data: {
-      name: {
-        first: 'john',
-        last: 'smith'
-      },
-      age: 30
+test('update nested state object', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class TestComponent {
+    stateObject = {
+      foo: 1
     }
-  })
+    handleClick() {
+      this.stateObject.foo = 2
+    }
+    render($) {
+      return $('button', {id: 'app', '@click': this.handleClick}, [
+        this.stateObject.foo
+      ])
+    }
+  }
+  Nuro.mount(TestComponent, window.document.querySelector('#target'))
 
-  expect(document.querySelector('#app').innerHTML).toEqual(`smith, john 30`)
-
-  app.update({
-    name: {
-      first: 'johnny'
-    },
-    age: 31
-  })
-
-  expect(document.querySelector('#app').innerHTML).toEqual(`smith, johnny 31`)
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app">1</button>`)
+  document.getElementById('app').click()
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app">2</button>`)
 })
 
-// This test was failing when var was used in diff.js diffAttributes instead of const or let
-test('update attributes', () => {
-  document.body.innerHTML = `
-    <div id="app"><input $for="t in things" name="{{t}}" type="checkbox"/></div>
-  `
-  var app = Nuro.create({
-    root: '#app',
-    data: {
-      things: ['one', 'two', 'three']
+test('update nested state array', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class TestComponent {
+    stateArray = ['one', 'two']
+    handleClick() {
+      this.stateArray.push('three')
     }
-  })
+    render($) {
+      return $('button', {id: 'app', '@click': this.handleClick}, [
+        this.stateArray[this.stateArray.length - 1]
+      ])
+    }
+  }
+  Nuro.mount(TestComponent, window.document.querySelector('#target'))
 
-  expect(document.querySelector('#app').childNodes[0].getAttribute('name')).toEqual(`one`)
-  expect(document.querySelector('#app').childNodes[1].getAttribute('name')).toEqual(`two`)
-  expect(document.querySelector('#app').childNodes[2].getAttribute('name')).toEqual(`three`)
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app">two</button>`)
+  document.getElementById('app').click()
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<button id="app">three</button>`)
+})
 
-  app.update({
-    things: ['two', 'three']
-  })
+test('update nested components', () => {
+  document.body.innerHTML = ''
+  
+  class Counter {
+    count = 0
+    handleClick() {
+      this.count++
+    }
+    render($) {
+      return $('button', {id: this.props.id, '@click': this.handleClick}, [
+        this.count
+      ])
+    }
+  }
+  class App {
+    render($) {
+      return $('div', {}, [
+        $(Counter, {id: 'counter-1'}),
+        $(Counter, {id: 'counter-2'})
+      ])
+    }
+  }
+  Nuro.mount(App)
 
-  expect(document.querySelector('#app').childNodes[0].getAttribute('name')).toEqual(`two`)
-  expect(document.querySelector('#app').childNodes[1].getAttribute('name')).toEqual(`three`)
+  expect(document.getElementById('counter-1').outerHTML)
+    .toEqual(`<button id="counter-1">0</button>`)
+  expect(document.getElementById('counter-2').outerHTML)
+    .toEqual(`<button id="counter-2">0</button>`)
+
+  document.getElementById('counter-1').click()
+  expect(document.getElementById('counter-1').outerHTML)
+    .toEqual(`<button id="counter-1">1</button>`)
+  expect(document.getElementById('counter-2').outerHTML)
+    .toEqual(`<button id="counter-2">0</button>`)
+
+  document.getElementById('counter-2').click()
+  document.getElementById('counter-2').click()
+  document.getElementById('counter-2').click()
+  expect(document.getElementById('counter-1').outerHTML)
+    .toEqual(`<button id="counter-1">1</button>`)
+  expect(document.getElementById('counter-2').outerHTML)
+    .toEqual(`<button id="counter-2">3</button>`)
+})
+
+test('update parent component without resetting child component state', () => {
+  document.body.innerHTML = ''
+  
+  class Child {
+    msg = 'Child'
+    handleClick() {
+      this.msg = 'Child updated'
+    }
+    render($) {
+      return $('button', {id: 'child', '@click': this.handleClick}, [this.msg])
+    }
+  }
+  class Parent {
+    msg = 'Parent'
+    handleClick() {
+      this.msg = 'Parent updated'
+    }
+    render($) {
+      return $('div', {id: 'app'}, [
+        $('button', {id: 'parent', '@click': this.handleClick}, [this.msg]),
+        $(Child)
+      ])
+    }
+  }
+  Nuro.mount(Parent)
+
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><button id="parent">Parent</button><button id="child">Child</button></div>`)
+
+  document.getElementById('child').click()
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><button id="parent">Parent</button><button id="child">Child updated</button></div>`)
+
+  document.getElementById('parent').click()
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><button id="parent">Parent updated</button><button id="child">Child updated</button></div>`)
+  
+})
+
+test('update child props when parent state updates', () => {
+  document.body.innerHTML = ''
+  
+  class Child {
+    render($) {
+      return $('div', {id: 'child'}, [
+        this.props.foo
+      ])
+    }
+  }
+  class Parent {
+    foo = 'original'
+    render($) {
+      return $('div', {id: 'app'}, [
+        $(Child, {foo: this.foo})
+      ])
+    }
+  }
+  let parent = Nuro.mount(Parent)
+
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><div id="child">original</div></div>`)
+
+  parent.foo = 'updated'
+  expect(document.getElementById('app').outerHTML)
+  .toEqual(`<div id="app"><div id="child">updated</div></div>`)
+  
 })

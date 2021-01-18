@@ -1,7 +1,7 @@
 export default {
-  input: 'src/index.js',
+  input: 'build/compiled/index.js',
   output: {
-    file: 'build/nuro.js',
+    file: 'build/dist/nuro.js',
     format: 'umd',
     name: 'Nuro'
   }
