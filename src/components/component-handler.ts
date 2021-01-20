@@ -17,6 +17,7 @@ import { NuroError } from '../util/nuro-error'
 import { compileTemplate } from './template-compiler'
 import { globalIncludes } from './includes'
 import { camelCaseToKebabCase } from '../util/string-utils'
+import { applyMixins } from './mixins'
 
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
@@ -43,6 +44,8 @@ export function mountComponent(
   let component = new ComponentClass()
 
   callHook(component, 'beforeInit')
+
+  applyMixins(component)
 
   let classIncludes = ComponentClass.includes || {}
   component.$includes = getComponentIncludes(classIncludes, globalIncludes)

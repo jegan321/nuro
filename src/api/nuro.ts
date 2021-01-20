@@ -6,6 +6,7 @@ export interface Nuro {
   unmount: Unmount
   compileTemplate: CompileTemplate
   include: Include
+  mixin: Mixin
   install: Install
 }
 
@@ -23,6 +24,10 @@ interface CompileTemplate {
 
 interface Include {
   (componentName: string, ComponentClass: ComponentClass): void
+}
+
+interface Mixin {
+  (mixin: Record<string, unknown>): void
 }
 
 interface Install {
