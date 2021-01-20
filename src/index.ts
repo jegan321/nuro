@@ -1,11 +1,11 @@
 import { mountRootComponent, unmountComponent } from './components/component-handler'
 import { compileTemplate } from './components/template-compiler'
 import { include } from './components/includes'
-import { Nuro } from './api/nuro'
+import { GlobalAPI } from './api/global-api'
 import { installPlugin } from './components/plugins'
 import { addMixin } from './components/mixins'
 
-let nuro: Nuro = {
+let globalAPI: GlobalAPI = {
   mount: mountRootComponent,
   unmount: unmountComponent,
   compileTemplate: compileTemplate,
@@ -14,4 +14,4 @@ let nuro: Nuro = {
   install: installPlugin
 }
 
-export default nuro
+export default globalAPI

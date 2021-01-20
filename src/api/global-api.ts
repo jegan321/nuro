@@ -1,7 +1,7 @@
 import { Component, ComponentClass } from './component'
 import { Plugin } from './plugin'
 
-export interface Nuro {
+export interface GlobalAPI {
   mount: Mount
   unmount: Unmount
   compileTemplate: CompileTemplate

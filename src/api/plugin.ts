@@ -1,5 +1,5 @@
-import { Nuro } from './nuro'
+import { GlobalAPI } from './global-api'
 
 export interface Plugin {
-  install: (Nuro: Nuro, options: Record<string, unknown>) => void
+  install: (globalAPI: GlobalAPI, options: Record<string, unknown>) => void
 }
