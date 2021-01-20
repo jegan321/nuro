@@ -3,7 +3,6 @@ import { compileTemplate } from './components/template-compiler'
 import { include } from './components/includes'
 import { Nuro } from './api/nuro'
 import { installPlugin } from './components/plugins'
-import { NuroError } from './util/nuro-error'
 
 let nuro: Nuro = {
   mount: mountRootComponent,
