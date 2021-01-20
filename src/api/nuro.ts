@@ -1,10 +1,12 @@
 import { Component, ComponentClass } from './component'
+import { Plugin } from './plugin'
 
 export interface Nuro {
   mount: Mount
   unmount: Unmount
   compileTemplate: CompileTemplate
   include: Include
+  install: Install
 }
 
 interface Mount {
@@ -21,4 +23,8 @@ interface CompileTemplate {
 
 interface Include {
   (componentName: string, ComponentClass: ComponentClass): void
+}
+
+interface Install {
+  (plugin: Plugin, options: Record<string, unknown>): void
 }

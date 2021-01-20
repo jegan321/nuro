@@ -2,12 +2,15 @@ import { mountRootComponent, unmountComponent } from './components/component-han
 import { compileTemplate } from './components/template-compiler'
 import { include } from './components/includes'
 import { Nuro } from './api/nuro'
+import { installPlugin } from './components/plugins'
+import { NuroError } from './util/nuro-error'
 
 let nuro: Nuro = {
   mount: mountRootComponent,
   unmount: unmountComponent,
   compileTemplate: compileTemplate,
-  include: include
+  include: include,
+  install: installPlugin
 }
 
 export default nuro
