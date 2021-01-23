@@ -56,3 +56,33 @@ test('todo list', () => {
   expect(document.querySelector('#app ul [data-index="1"]').innerHTML)
     .toBe('#2: task two')
 })
+
+test('nested component', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class SearchBar {
+    static template = `
+      <input :placeholder="props.placeholder" />
+    `
+  }
+
+  class App {
+    msg = 'Hello, world'
+    static template = `
+      <div id="app">
+        <h1>Test</h1>
+        <search-bar placeholder="Search for something"></search-bar>
+      </div>
+    `
+    static includes = {
+      SearchBar
+    }
+  }
+
+  Nuro.mount(App, document.querySelector('#target'))
+
+  expect(document.querySelector('#app h1').innerHTML)
+  .toBe('Test')
+  expect(document.querySelector('#app input').getAttribute('placeholder'))
+  .toBe('Search for something')
+})

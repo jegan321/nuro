@@ -69,3 +69,35 @@ test('click call method using instance variable', () => {
 
   expect(result).toEqual('my var')
 })
+
+test('toggle event listener', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class TestComponent {
+    clickEnabled = true
+    clickCount = 0
+    handleClick() {
+      this.clickCount++
+    }
+    doNothing() {
+
+    }
+    render($) {
+      return $('div', {id: 'target', '@click': this.clickEnabled ? this.handleClick : this.doNothing}, [
+        'Nuro'
+      ])
+    }
+  }
+  let component = Nuro.mount(TestComponent, window.document.querySelector('#target'))
+
+  document.getElementById('target').click()
+
+  expect(component.clickCount).toEqual(1)
+
+  component.clickEnabled = false
+
+  document.getElementById('target').click()
+
+  expect(component.clickCount).toEqual(1)
+
+})

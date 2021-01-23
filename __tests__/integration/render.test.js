@@ -229,3 +229,27 @@ test('render children as scalar instead of array', () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app">Hello</div>`)
 })
+
+test('render doesn\'t return a VNode', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class TestComponent {
+    render($) {
+      return 'oops'
+    }
+  }
+
+  expect(() => {
+    Nuro.mount(TestComponent, window.document.querySelector('#target'))
+  }).toThrow()
+})
+
+test('missing render method', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class TestComponent {}
+
+  expect(() => {
+    Nuro.mount(TestComponent, window.document.querySelector('#target'))
+  }).toThrow()
+})

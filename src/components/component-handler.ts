@@ -112,7 +112,7 @@ function bindAllMethods(
 }
 
 export function unmountComponent(element: Element): boolean {
-  if (hasComponentProxy(element)) {
+  if (element != null && hasComponentProxy(element)) {
     let component = getComponentProxy(element)
     callHook(component, 'beforeUnmount')
     deleteNodeContext(element)
