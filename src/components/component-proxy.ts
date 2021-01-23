@@ -1,4 +1,4 @@
-import { Component } from './component'
+import { Component } from '../api/component'
 import { isObject, isArray } from '../util/object-utils'
 
 interface NestedState {

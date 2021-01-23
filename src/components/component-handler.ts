@@ -1,4 +1,4 @@
-import { Component, ComponentClass, Render } from './component'
+import { Component, ComponentClass, Render } from '../api/component'
 import { createElementFactory } from './create-element'
 import { DiffEngine } from '../dom/diff-engine'
 import { DomPatcher } from '../dom/dom-patcher'
@@ -10,13 +10,14 @@ import {
 } from '../dom/node-context'
 import { proxyHandler } from './component-proxy'
 import { getMethodNames } from '../util/object-utils'
-import { VNode } from '../dom/vnode'
+import { VNode } from '../api/vnode'
 import { callHook } from './hooks'
 import { mapVNode } from '../dom/map-vnode'
 import { NuroError } from '../util/nuro-error'
 import { compileTemplate } from './template-compiler'
 import { globalIncludes } from './includes'
 import { camelCaseToKebabCase } from '../util/string-utils'
+import { applyMixins } from './mixins'
 
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
@@ -43,6 +44,8 @@ export function mountComponent(
   let component = new ComponentClass()
 
   callHook(component, 'beforeInit')
+
+  applyMixins(component)
 
   let classIncludes = ComponentClass.includes || {}
   component.$includes = getComponentIncludes(classIncludes, globalIncludes)

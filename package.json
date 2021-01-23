@@ -1,6 +1,6 @@
 {
   "name": "nuro",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Lightweight, reactive, component-based UI framework",
   "main": "build/dist/nuro.js",
   "author": {
@@ -28,5 +28,8 @@
     "watch": "watch 'npm run compile && npm run bundle' ./src",
     "start": "npm run watch",
     "test": "npm run build && jest --coverage"
-  }
+  },
+  "keywords": [
+    "framework", "lightweight", "components", "front-end", "web", "javascript", "html"
+  ]
 }

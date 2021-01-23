@@ -1,17 +1,13 @@
-import { VNode } from '../dom/vnode'
-import { Component, ComponentClass } from './component'
+import { VNode } from '../api/vnode'
+import { Component, ComponentClass } from '../api/component'
+import { CreateElement } from '../api/create-element'
 import { isArray } from '../util/object-utils'
-import { NuroError } from '../util/nuro-error'
-
-export interface CreateElement {
-  (type: string, props?: Record<string, any>, children?: VNode[]): VNode
-}
 
 export function createElementFactory(includes: Map<string, ComponentClass>): CreateElement {
   return function(
     type: string | (new () => Component),
     props: Record<string, any> = {},
-    children: (VNode | any)[] = []
+    children: (VNode | string)[] | VNode | string = []
   ): VNode {
     if (!isArray(children)) {
       children = [children]
@@ -36,6 +32,7 @@ export function createElementFactory(includes: Map<string, ComponentClass>): Cre
       nodeType = 'element'
       tag = type
     }
+
     let vNode: VNode = {
       nodeType: nodeType,
       tag: tag,
@@ -44,9 +41,9 @@ export function createElementFactory(includes: Map<string, ComponentClass>): Cre
       children: [],
       componentClass: componentClass
     }
+
     vNode.children = children.map(child => {
-      if (child != null && child.nodeType) {
-        // Child is VNode
+      if (isVNode(child)) {
         return child
       } else {
         return {
@@ -58,6 +55,11 @@ export function createElementFactory(includes: Map<string, ComponentClass>): Cre
         }
       }
     })
+
     return vNode
   }
+}
+
+function isVNode(child: unknown): child is VNode {
+  return child != null && (child as VNode).nodeType !== undefined
 }

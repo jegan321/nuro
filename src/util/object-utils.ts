@@ -31,14 +31,14 @@ export function getMethodNames(Class: new () => unknown): string[] {
   return Object.getOwnPropertyNames(Class.prototype).filter(x => x !== 'constructor')
 }
 
-export function isObject(val: unknown): boolean {
+export function isObject(val: unknown): val is Object {
   return Object.prototype.toString.call(val) === '[object Object]'
 }
 
-export function isFunction(val: unknown): boolean {
+export function isFunction(val: unknown): val is Function {
   return Object.prototype.toString.call(val) === '[object Function]'
 }
 
-export function isArray(val: unknown): boolean {
+export function isArray(val: unknown): val is Array<any> {
   return Array.isArray(val)
 }
