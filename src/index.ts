@@ -1,9 +1,9 @@
-import { mountRootComponent, unmountComponent } from './components/component-handler'
-import { compileTemplate } from './components/template-compiler'
-import { include } from './components/includes'
-import { GlobalAPI } from './api/global-api'
-import { installPlugin } from './components/plugins'
-import { addMixin } from './components/mixins'
+import { mountRootComponent, unmountComponent } from './components/component-handler.js'
+import { compileTemplate } from './components/template-compiler.js'
+import { include } from './components/includes.js'
+import { GlobalAPI } from './api/global-api.js'
+import { installPlugin } from './components/plugins.js'
+import { addMixin } from './components/mixins.js'
 
 let globalAPI: GlobalAPI = {
   mount: mountRootComponent,

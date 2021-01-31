@@ -1,5 +1,5 @@
-import { Component, ComponentClass } from './component'
-import { Plugin } from './plugin'
+import { Component, ComponentClass } from './component.js'
+import { Plugin } from './plugin.js'
 
 export interface GlobalAPI {
   mount: Mount

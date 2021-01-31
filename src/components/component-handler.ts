@@ -1,23 +1,23 @@
-import { Component, ComponentClass, Render } from '../api/component'
-import { createElementFactory } from './create-element'
-import { DiffEngine } from '../dom/diff-engine'
-import { DomPatcher } from '../dom/dom-patcher'
+import { Component, ComponentClass, Render } from '../api/component.js'
+import { createElementFactory } from './create-element.js'
+import { DiffEngine } from '../dom/diff-engine.js'
+import { DomPatcher } from '../dom/dom-patcher.js'
 import {
   deleteNodeContext,
   getComponentProxy,
   hasComponentProxy,
   setComponentProxy
-} from '../dom/node-context'
-import { proxyHandler } from './component-proxy'
-import { getMethodNames } from '../util/object-utils'
-import { VNode } from '../api/vnode'
-import { callHook } from './hooks'
-import { mapVNode } from '../dom/map-vnode'
-import { NuroError } from '../util/nuro-error'
-import { compileTemplate } from './template-compiler'
-import { globalIncludes } from './includes'
-import { camelCaseToKebabCase } from '../util/string-utils'
-import { applyMixins } from './mixins'
+} from '../dom/node-context.js'
+import { proxyHandler } from './component-proxy.js'
+import { getMethodNames } from '../util/object-utils.js'
+import { VNode } from '../api/vnode.js'
+import { callHook } from './hooks.js'
+import { mapVNode } from '../dom/map-vnode.js'
+import { NuroError } from '../util/nuro-error.js'
+import { compileTemplate } from './template-compiler.js'
+import { globalIncludes } from './includes.js'
+import { camelCaseToKebabCase } from '../util/string-utils.js'
+import { applyMixins } from './mixins.js'
 
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 

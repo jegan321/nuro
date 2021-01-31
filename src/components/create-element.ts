@@ -1,7 +1,7 @@
-import { VNode } from '../api/vnode'
-import { Component, ComponentClass } from '../api/component'
-import { CreateElement } from '../api/create-element'
-import { isArray } from '../util/object-utils'
+import { VNode } from '../api/vnode.js'
+import { Component, ComponentClass } from '../api/component.js'
+import { CreateElement } from '../api/create-element.js'
+import { isArray } from '../util/object-utils.js'
 
 export function createElementFactory(includes: Map<string, ComponentClass>): CreateElement {
   return function(

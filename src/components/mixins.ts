@@ -1,4 +1,4 @@
-import { Component } from '../api/component'
+import { Component } from '../api/component.js'
 
 const mixins: Array<Record<string, unknown>> = []
 

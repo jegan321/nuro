@@ -1,5 +1,5 @@
-import { CreateElement } from './create-element'
-import { VNode } from './vnode'
+import { CreateElement } from './create-element.js'
+import { VNode } from './vnode.js'
 
 export interface Component {
   props: Record<string, any>

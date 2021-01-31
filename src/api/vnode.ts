@@ -1,4 +1,4 @@
-import { Component } from './component'
+import { Component } from './component.js'
 
 export interface VNode {
   nodeType: 'component' | 'element' | 'text' | 'comment'

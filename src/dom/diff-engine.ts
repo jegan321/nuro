@@ -1,7 +1,7 @@
-import { VNode } from '../api/vnode'
-import { zip } from '../util/object-utils'
-import { NuroError } from '../util/nuro-error'
-import { DomPatcher } from './dom-patcher'
+import { VNode } from '../api/vnode.js'
+import { zip } from '../util/object-utils.js'
+import { NuroError } from '../util/nuro-error.js'
+import { DomPatcher } from './dom-patcher.js'
 
 interface PatchFunction {
   (node: Element): Element | void

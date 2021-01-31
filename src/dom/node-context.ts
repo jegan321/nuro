@@ -1,5 +1,5 @@
-import { Component } from '../api/component'
-import { NuroError } from '../util/nuro-error'
+import { Component } from '../api/component.js'
+import { NuroError } from '../util/nuro-error.js'
 
 interface NodeContext {
   eventHandlers: Record<string, EventListener>

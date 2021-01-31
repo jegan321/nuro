@@ -1,5 +1,5 @@
-import { Component } from '../api/component'
-import { isObject, isArray } from '../util/object-utils'
+import { Component } from '../api/component.js'
+import { isObject, isArray } from '../util/object-utils.js'
 
 interface NestedState {
   [state: string]: any

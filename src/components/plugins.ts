@@ -1,5 +1,5 @@
-import { GlobalAPI } from '../api/global-api'
-import { Plugin } from '../api/plugin'
+import { GlobalAPI } from '../api/global-api.js'
+import { Plugin } from '../api/plugin.js'
 
 const installedPlugins: Array<Plugin> = []
 
