@@ -1,14 +1,14 @@
 {
   "name": "nuro",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Lightweight, reactive, component-based UI framework",
-  "type": "module",
   "main": "./build/dist/nuro.js",
   "module": "./build/compiled/index.js",
   "exports": {
     "require": "./build/dist/nuro.js",
     "import": "./build/compiled/index.js"
   },
+  "types": "./build/compiled/index.d.js",
   "author": {
     "name": "John Egan"
   },
@@ -33,7 +33,8 @@
     "build": "npm run format && npm run compile && npm run bundle",
     "watch": "watch 'npm run compile && npm run bundle' ./src",
     "start": "npm run watch",
-    "test": "npm run build && jest --coverage"
+    "test": "npm run build && jest --coverage",
+    "prepublish": "npm run test"
   },
   "keywords": [
     "framework", "lightweight", "components", "front-end", "web", "javascript", "html"
