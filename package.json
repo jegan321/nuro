@@ -1,8 +1,14 @@
 {
   "name": "nuro",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Lightweight, reactive, component-based UI framework",
-  "main": "build/dist/nuro.js",
+  "type": "module",
+  "main": "./build/dist/nuro.js",
+  "module": "./build/compiled/index.js",
+  "exports": {
+    "require": "./build/dist/nuro.js",
+    "import": "./build/compiled/index.js"
+  },
   "author": {
     "name": "John Egan"
   },
