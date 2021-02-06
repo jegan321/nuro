@@ -1,4 +1,4 @@
-import { Component, ComponentClass, Render } from '../api/component.js'
+import { ComponentProxy, ComponentProxyClass, Render } from '../api/component-proxy.js'
 import { createElementFactory } from './create-element.js'
 import { DiffEngine } from '../dom/diff-engine.js'
 import { DomPatcher } from '../dom/dom-patcher.js'
@@ -22,10 +22,10 @@ import { applyMixins } from './mixins.js'
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
 export function mountRootComponent(
-  ComponentClass: new () => Component,
+  ComponentClass: new () => ComponentProxy,
   element?: Element,
   props: Record<string, any> = {}
-): Component {
+): ComponentProxy {
   if (!element) {
     element = domPatcher.createElementInBody('div')
   }
@@ -35,7 +35,7 @@ export function mountRootComponent(
 }
 
 export function mountComponent(
-  ComponentClass: ComponentClass,
+  ComponentClass: ComponentProxyClass,
   element: Element,
   props: Record<string, any>,
   children: VNode[],
@@ -88,10 +88,10 @@ export function mountComponent(
  * Make component names lower case and remove dashes
  */
 function getComponentIncludes(
-  classIncludes: Record<string, ComponentClass>,
-  globalIncludes: Map<string, ComponentClass>
-): Map<string, ComponentClass> {
-  let includes = new Map<string, ComponentClass>([...globalIncludes])
+  classIncludes: Record<string, ComponentProxyClass>,
+  globalIncludes: Map<string, ComponentProxyClass>
+): Map<string, ComponentProxyClass> {
+  let includes = new Map<string, ComponentProxyClass>([...globalIncludes])
   for (let originalName in classIncludes) {
     let componentClass = classIncludes[originalName]
     let kebabName = camelCaseToKebabCase(originalName)
@@ -102,9 +102,9 @@ function getComponentIncludes(
 }
 
 function bindAllMethods(
-  component: Component,
-  componentProxy: Component,
-  ComponentClass: new () => Component
+  component: ComponentProxy,
+  componentProxy: ComponentProxy,
+  ComponentClass: new () => ComponentProxy
 ) {
   getMethodNames(ComponentClass).forEach(method => {
     component[method] = component[method].bind(componentProxy)
@@ -123,7 +123,7 @@ export function unmountComponent(element: Element): boolean {
   }
 }
 
-export function updateComponent(component: Component): Component {
+export function updateComponent(component: ComponentProxy): ComponentProxy {
   callHook(component, 'beforeRender')
 
   let createElement = createElementFactory(component.$includes)

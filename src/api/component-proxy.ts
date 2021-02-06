@@ -1,12 +1,12 @@
 import { CreateElement } from './create-element.js'
 import { VNode } from './vnode.js'
 
-export interface Component {
+export interface ComponentProxy {
   props: Record<string, any>
   [state: string]: any
   $element: Element
   $vnode: VNode
-  $includes: Map<string, ComponentClass>
+  $includes: Map<string, ComponentProxyClass>
   render: Render
   $update: () => void
   beforeInit: () => void
@@ -18,10 +18,10 @@ export interface Component {
   afterUnmount: () => void
 }
 
-export interface ComponentClass {
-  new (): Component
+export interface ComponentProxyClass {
+  new (): ComponentProxy
   template?: string
-  includes?: Record<string, ComponentClass>
+  includes?: Record<string, ComponentProxyClass>
 }
 
 export interface Render {

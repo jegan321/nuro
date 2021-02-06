@@ -1,14 +1,14 @@
-import { Component } from '../api/component.js'
+import { ComponentProxy } from '../api/component-proxy.js'
 import { isObject, isArray } from '../util/object-utils.js'
 
 interface NestedState {
   [state: string]: any
-  $component: Component
+  $component: ComponentProxy
 }
 
-type ProxiedObject = NestedState | Component
+type ProxiedObject = NestedState | ComponentProxy
 
-export const proxyHandler: ProxyHandler<Component> = {
+export const proxyHandler: ProxyHandler<ComponentProxy> = {
   get: handleGet,
   set: handleSet,
   deleteProperty: handleDelete
@@ -38,7 +38,7 @@ function handleGet(obj: ProxiedObject, prop: string): unknown {
   }
 }
 
-function handleSet(obj: Component, prop: string, value: any): boolean {
+function handleSet(obj: ComponentProxy, prop: string, value: any): boolean {
   obj[prop] = value
   let component = getComponent(obj)
   if (prop === 'props') {
@@ -48,13 +48,13 @@ function handleSet(obj: Component, prop: string, value: any): boolean {
   return true
 }
 
-function handleDelete(obj: Component, prop: string): boolean {
+function handleDelete(obj: ComponentProxy, prop: string): boolean {
   delete obj[prop]
   let component = getComponent(obj)
   component.$update()
   return true
 }
 
-function getComponent(obj: ProxiedObject): Component {
+function getComponent(obj: ProxiedObject): ComponentProxy {
   return obj.$component != null ? obj.$component : obj
 }
