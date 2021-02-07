@@ -1,4 +1,5 @@
 import { ComponentProxy } from '../api/component-proxy.js'
+import { Component } from '../api/component.js'
 import { isObject, isArray } from '../util/object-utils.js'
 
 interface NestedState {
@@ -8,7 +9,11 @@ interface NestedState {
 
 type ProxiedObject = NestedState | ComponentProxy
 
-export const proxyHandler: ProxyHandler<ComponentProxy> = {
+export function createComponentProxy(component: Component): ComponentProxy {
+  return new Proxy(component, proxyHandler) as ComponentProxy
+}
+
+const proxyHandler: ProxyHandler<ComponentProxy> = {
   get: handleGet,
   set: handleSet,
   deleteProperty: handleDelete

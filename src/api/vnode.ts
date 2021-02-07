@@ -1,4 +1,5 @@
 import { ComponentProxy } from './component-proxy.js'
+import { ComponentClass } from './component.js'
 
 export interface VNode {
   nodeType: 'component' | 'element' | 'text' | 'comment'
@@ -6,5 +7,5 @@ export interface VNode {
   text: string
   attrs: Record<string, any>
   children: VNode[]
-  componentClass?: new () => ComponentProxy
+  componentClass?: ComponentClass
 }

@@ -1,7 +1,7 @@
-import { ComponentProxyClass } from '../api/component-proxy.js'
+import { ComponentClass } from '../api/component.js'
 
-export const globalIncludes = new Map<string, ComponentProxyClass>()
+export const globalIncludes = new Map<string, ComponentClass>()
 
-export function include(componentName: string, ComponentClass: ComponentProxyClass): void {
+export function include(componentName: string, ComponentClass: ComponentClass): void {
   globalIncludes.set(componentName, ComponentClass)
 }

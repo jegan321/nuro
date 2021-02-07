@@ -1,9 +1,10 @@
 import { VNode } from '../api/vnode.js'
-import { ComponentProxy, ComponentProxyClass } from '../api/component-proxy.js'
+import { ComponentProxy } from '../api/component-proxy.js'
 import { CreateElement } from '../api/create-element.js'
 import { isArray } from '../util/object-utils.js'
+import { ComponentClass } from '../api/component.js'
 
-export function createElementFactory(includes: Map<string, ComponentProxyClass>): CreateElement {
+export function createElementFactory(includes: Map<string, ComponentClass>): CreateElement {
   return function(
     type: string | (new () => ComponentProxy),
     props: Record<string, any> = {},

@@ -1,4 +1,5 @@
-import { ComponentProxy, ComponentProxyClass, Render } from '../api/component-proxy.js'
+import { Component, ComponentClass } from '../api/component.js'
+import { ComponentProxy, Render } from '../api/component-proxy.js'
 import { createElementFactory } from './create-element.js'
 import { DiffEngine } from '../dom/diff-engine.js'
 import { DomPatcher } from '../dom/dom-patcher.js'
@@ -8,7 +9,7 @@ import {
   hasComponentProxy,
   setComponentProxy
 } from '../dom/node-context.js'
-import { proxyHandler } from './component-proxy.js'
+import { createComponentProxy } from './component-proxy.js'
 import { getMethodNames } from '../util/object-utils.js'
 import { VNode } from '../api/vnode.js'
 import { callHook } from './hooks.js'
@@ -22,7 +23,7 @@ import { applyMixins } from './mixins.js'
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
 export function mountRootComponent(
-  ComponentClass: new () => ComponentProxy,
+  ComponentClass: ComponentClass,
   element?: Element,
   props: Record<string, any> = {}
 ): ComponentProxy {
@@ -35,42 +36,43 @@ export function mountRootComponent(
 }
 
 export function mountComponent(
-  ComponentClass: ComponentProxyClass,
+  ComponentClass: ComponentClass,
   element: Element,
   props: Record<string, any>,
   children: VNode[],
   vOldNode: VNode
 ): Element {
-  let component = new ComponentClass()
+  let component = new ComponentClass(props)
 
   callHook(component, 'beforeInit')
 
   applyMixins(component)
 
-  let classIncludes = ComponentClass.includes || {}
-  component.$includes = getComponentIncludes(classIncludes, globalIncludes)
+  let localIncludes = component.$includes || {}
+  component.$includes = getComponentIncludes(localIncludes, globalIncludes)
 
   if (!component.render) {
-    if (ComponentClass.template) {
-      let renderMethodCode = compileTemplate(ComponentClass.template)
+    if (component.$template) {
+      let renderMethodCode = compileTemplate(component.$template)
       component.render = new Function('h', renderMethodCode) as Render
     } else {
       throw new NuroError(
-        'Either a render method or a static template string is required in a component class'
+        'Either a render method or a $template string is required in a component class'
       )
     }
   }
 
-  component.$update = function() {
-    updateComponent(component)
-  }
   component.$element = element
   component.$vnode = vOldNode
-
   component.props = props
   component.props.children = children
 
-  let componentProxy = new Proxy(component, proxyHandler)
+  let componentProxy = createComponentProxy(component)
+
+  component.$update = function() {
+    updateComponent(component)
+  }
+
   bindAllMethods(component, componentProxy, ComponentClass)
 
   callHook(componentProxy, 'beforeMount')
@@ -88,10 +90,10 @@ export function mountComponent(
  * Make component names lower case and remove dashes
  */
 function getComponentIncludes(
-  classIncludes: Record<string, ComponentProxyClass>,
-  globalIncludes: Map<string, ComponentProxyClass>
-): Map<string, ComponentProxyClass> {
-  let includes = new Map<string, ComponentProxyClass>([...globalIncludes])
+  classIncludes: Record<string, ComponentClass>,
+  globalIncludes: Map<string, ComponentClass>
+): Map<string, ComponentClass> {
+  let includes = new Map<string, ComponentClass>([...globalIncludes])
   for (let originalName in classIncludes) {
     let componentClass = classIncludes[originalName]
     let kebabName = camelCaseToKebabCase(originalName)
@@ -102,9 +104,9 @@ function getComponentIncludes(
 }
 
 function bindAllMethods(
-  component: ComponentProxy,
+  component: Component,
   componentProxy: ComponentProxy,
-  ComponentClass: new () => ComponentProxy
+  ComponentClass: ComponentClass
 ) {
   getMethodNames(ComponentClass).forEach(method => {
     component[method] = component[method].bind(componentProxy)
@@ -123,7 +125,7 @@ export function unmountComponent(element: Element): boolean {
   }
 }
 
-export function updateComponent(component: ComponentProxy): ComponentProxy {
+export function updateComponent(component: Component): Component {
   callHook(component, 'beforeRender')
 
   let createElement = createElementFactory(component.$includes)

@@ -5,7 +5,7 @@ test('simple template', () => {
 
   class App {
     msg = 'Hello, world'
-    static template = `
+    $template = `
       <div id="app">
         <h1>Test</h1>
         <p>{{msg}}</p>
@@ -27,7 +27,7 @@ test('todo list', () => {
 
   class App {
     tasks = []
-    static template = `
+    $template = `
       <div id="app">
         <h1>Todo List for {{props.name}}</h1>
         <p $if="tasks.length">Loading...</p>
@@ -61,20 +61,20 @@ test('nested component', () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class SearchBar {
-    static template = `
+    $template = `
       <input :placeholder="props.placeholder" />
     `
   }
 
   class App {
     msg = 'Hello, world'
-    static template = `
+    $template = `
       <div id="app">
         <h1>Test</h1>
         <search-bar placeholder="Search for something"></search-bar>
       </div>
     `
-    static includes = {
+    $includes = {
       SearchBar
     }
   }

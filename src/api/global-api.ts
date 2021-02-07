@@ -1,4 +1,4 @@
-import { ComponentProxy, ComponentProxyClass } from './component-proxy.js'
+import { Component, ComponentClass } from './component.js'
 import { Plugin } from './plugin.js'
 
 export interface GlobalAPI {
@@ -11,7 +11,7 @@ export interface GlobalAPI {
 }
 
 interface Mount {
-  (ComponentClass: ComponentProxyClass, element?: Element, props?: Record<string, any>): ComponentProxy
+  (ComponentClass: ComponentClass, element?: Element, props?: Record<string, any>): Component
 }
 
 interface Unmount {
@@ -23,7 +23,7 @@ interface CompileTemplate {
 }
 
 interface Include {
-  (componentName: string, ComponentClass: ComponentProxyClass): void
+  (componentName: string, ComponentClass: ComponentClass): void
 }
 
 interface Mixin {
