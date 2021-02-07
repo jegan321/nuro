@@ -1,13 +1,13 @@
 import { mapVNode } from './map-vnode.js'
-import { getComponentProxy, removeEventHandler, setEventHandler } from './node-context.js'
+import { removeEventHandler, setEventHandler } from './node-context.js'
 import { NuroError } from '../util/nuro-error.js'
 import { isFunction } from '../util/object-utils.js'
 import { VNode } from '../api/vnode.js'
-import { Component } from '../api/component.js'
+import { ComponentClass } from '../api/component.js'
 
 interface MountFunction {
   (
-    ComponentClass: new () => Component,
+    ComponentClass: ComponentClass,
     node: Element,
     props: Record<string, any>,
     children: VNode[],

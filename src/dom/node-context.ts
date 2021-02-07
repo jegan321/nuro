@@ -1,9 +1,9 @@
-import { Component } from '../api/component.js'
+import { ComponentProxy } from '../api/component-proxy.js'
 import { NuroError } from '../util/nuro-error.js'
 
 interface NodeContext {
   eventHandlers: Record<string, EventListener>
-  component?: Component
+  component?: ComponentProxy
 }
 
 type ElementWithNodeContext = Element & {
@@ -48,12 +48,12 @@ export function removeEventHandler(node: ElementWithNodeContext, eventType: stri
   delete nodeContext.eventHandlers[eventType]
 }
 
-export function setComponentProxy(node: ElementWithNodeContext, componentProxy: Component) {
+export function setComponentProxy(node: ElementWithNodeContext, componentProxy: ComponentProxy) {
   let nodeContext = getOrCreateNodeContext(node)
   nodeContext.component = componentProxy
 }
 
-export function getComponentProxy(node: ElementWithNodeContext): Component {
+export function getComponentProxy(node: ElementWithNodeContext): ComponentProxy {
   let nodeContext = getOrCreateNodeContext(node)
   if (nodeContext.component) {
     return nodeContext.component
