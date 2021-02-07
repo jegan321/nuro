@@ -191,7 +191,7 @@ All templates are automatically compiled to render methods behind the scenes whe
 Render methods are the most flexible way to implement components since you have the full power of JavaScript. If there is some logic that is awkward to represent as a template (such as dynamic tag names) you may want to use render methods instead. However, they tend to be tedious to write and hard to read for large components. 
 
 ## Nested Components
-To include components inside other components, use the `includes` object:
+To include components inside other components, use an `$includes` object:
 ```js
 class ChildComponent { 
   $template = `<p>Child component</p>` 
