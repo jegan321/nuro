@@ -1,4 +1,4 @@
-import { ComponentProxy } from './component-proxy.js'
+import { ComponentProxy } from '../components/component-proxy.js'
 import { ComponentClass } from './component.js'
 
 export interface VNode {

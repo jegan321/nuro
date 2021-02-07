@@ -1,5 +1,5 @@
 import { Component } from '../api/component.js'
-import { ComponentProxy } from '../api/component-proxy.js'
+import { ComponentProxy } from './component-proxy.js'
 
 const mixins: Array<Record<string, unknown>> = []
 

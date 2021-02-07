@@ -1,5 +1,5 @@
 import { Component, ComponentClass } from '../api/component.js'
-import { ComponentProxy, Render } from '../api/component-proxy.js'
+import { ComponentProxy, Render } from './component-proxy.js'
 import { createElementFactory } from './create-element.js'
 import { DiffEngine } from '../dom/diff-engine.js'
 import { DomPatcher } from '../dom/dom-patcher.js'
@@ -9,7 +9,7 @@ import {
   hasComponentProxy,
   setComponentProxy
 } from '../dom/node-context.js'
-import { createComponentProxy } from './component-proxy.js'
+import { createComponentProxy } from './proxy-handler.js'
 import { getMethodNames } from '../util/object-utils.js'
 import { VNode } from '../api/vnode.js'
 import { callHook } from './hooks.js'

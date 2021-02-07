@@ -1,5 +1,5 @@
 import { VNode } from '../api/vnode.js'
-import { ComponentProxy } from '../api/component-proxy.js'
+import { ComponentProxy } from './component-proxy.js'
 import { CreateElement } from '../api/create-element.js'
 import { isArray } from '../util/object-utils.js'
 import { ComponentClass } from '../api/component.js'

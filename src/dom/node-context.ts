@@ -1,4 +1,4 @@
-import { ComponentProxy } from '../api/component-proxy.js'
+import { ComponentProxy } from '../components/component-proxy.js'
 import { NuroError } from '../util/nuro-error.js'
 
 interface NodeContext {

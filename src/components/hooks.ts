@@ -1,4 +1,4 @@
-import { ComponentProxy } from '../api/component-proxy.js'
+import { ComponentProxy } from './component-proxy.js'
 import { Component } from '../api/component.js'
 
 export function callHook(component: Component | ComponentProxy, hookName: string) {
