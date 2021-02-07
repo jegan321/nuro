@@ -1,5 +1,5 @@
 import { Component, ComponentClass } from '../api/component.js'
-import { ComponentProxy, Render } from './component-proxy.js'
+import { ComponentProxy, InjectedProps, Render } from '../api/component-proxy.js'
 import { createElementFactory } from './create-element.js'
 import { DiffEngine } from '../dom/diff-engine.js'
 import { DomPatcher } from '../dom/dom-patcher.js'
@@ -22,17 +22,17 @@ import { applyMixins } from './mixins.js'
 
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
-export function mountRootComponent(
-  ComponentClass: ComponentClass,
+export function mountRootComponent<T extends Component>(
+  ComponentClass: new (props: any) => T,
   element?: Element,
   props: Record<string, any> = {}
-): ComponentProxy {
+): T & InjectedProps {
   if (!element) {
     element = domPatcher.createElementInBody('div')
   }
   let vOldNode = mapVNode(element)
-  let newNode = mountComponent(ComponentClass, element, props, [], vOldNode)
-  return getComponentProxy(newNode)
+  let newNode = mountComponent(ComponentClass as any, element, props, [], vOldNode)
+  return getComponentProxy(newNode) as any
 }
 
 export function mountComponent(
