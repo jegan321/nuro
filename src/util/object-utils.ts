@@ -27,7 +27,7 @@ export function zip<T, V>(xs: ArrayLike<T>, ys: ArrayLike<V>): Pair<T, V>[] {
   return zipped
 }
 
-export function getMethodNames(Class: new () => unknown): string[] {
+export function getMethodNames(Class: any): string[] {
   return Object.getOwnPropertyNames(Class.prototype).filter(x => x !== 'constructor')
 }
 

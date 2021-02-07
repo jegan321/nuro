@@ -5,7 +5,7 @@ Nuro is a reactive, component-based JavaScript framework which can be used as a 
 ```js
   class App {
     name = 'world'
-    static template = `
+    $template = `
       <div id="app">
         <input @input="handleChange" placeholder="Enter your name"/>
         <p>Hello, {{name}}</p>
@@ -47,7 +47,7 @@ npm install nuro
 Components are defined using JavaScript classes:
 ```js
 class MyComponent { 
-  static template = `<div id="app">Hello, world</div>` 
+  $template = `<div id="app">Hello, world</div>` 
 }
 ```
 Component classes don't require any base class to be extended or functions to be imported. Just add a template and any lifecycle hooks you need and pass it to `Nuro.mount()`. Nuro will instantiate an instance of your component, compile the template and call any hooks automatically.
@@ -70,7 +70,7 @@ Nuro.mount(MyComponent, document.querySelector('#app'), { foo: 'bar' })
 Props are variables you can pass to a component to be used during rendering. They are stored in an object in your component called `props` and can be referenced in your templates:
 ```js
 class Greeter {
-  static template = `<p>Hello, {{props.name}]</p>`
+  $template = `<p>Hello, {{props.name}]</p>`
 }
 Nuro.mount(Greeter, document.querySelector('#app'), { name: 'world' })
 ```
@@ -80,7 +80,7 @@ State is data that can be stored in your component and persist between renders. 
 ```js
 class App {
   msg = "My state variable"
-  static template = `<div>{{msg}}</div>`
+  $template = `<div>{{msg}}</div>`
 }
 Nuro.mount(App)
 ```
@@ -90,7 +90,7 @@ Changing state or props on a component instance will automatically trigger a re-
 ```js
 class Status {
   text = 'Waiting...'
-  static template = `<p>{{text}}</p>`
+  $template = `<p>{{text}}</p>`
 }
 let status = Nuro.mount(Status)
 setTimeout(() => status.text = 'Done!', 1000)
@@ -101,7 +101,7 @@ Component state can also be changed internally using event handlers. Just add an
 ```js
 class Clicker {
   count = 0
-  static template = `<button @click="increment">Clicked {{count}} times</button>`
+  $template = `<button @click="increment">Clicked {{count}} times</button>`
   increment() {
     this.count++
   }
@@ -116,7 +116,7 @@ Only renders the element if the condition is truthy
 ```js
 class Peekaboo {
   show = false
-  static template = `
+  $template = `
     <div>
       <button @click="toggleText">{{show ? 'Hide' : 'Show'}}</button>
       <p $if="show">Peekaboo!</p>
@@ -133,7 +133,7 @@ Renders a list of elements
 ```js
 class Todos {
   tasks = ['First', 'Second', 'Third']
-  static template = `
+  $template = `
     <div>
       <h1>Todo List</h1>
       <ul>
@@ -194,16 +194,16 @@ Render methods are the most flexible way to implement components since you have 
 To include components inside other components, use the `includes` object:
 ```js
 class ChildComponent { 
-  static template = `<p>Child component</p>` 
+  $template = `<p>Child component</p>` 
 }
 class ParentComponent {
-  static template = `
+  $template = `
     <div>
       <p>Child content below...</p>
       <child-component></child-component>
     </div>
   `
-  static includes = {
+  $includes = {
     'child-component': ChildComponent
   }
 }
@@ -211,14 +211,14 @@ Nuro.mount(ParentComponent)
 ```
 Nuro is smart enough to convert PascalCase to kebab-case so you can also use the shorthand:
 ```js
-static includes = {
+$includes = {
   ChildComponent
 }
 ```
 Or register a component globally so it can be included in all other components in your app:
 ```js
 Nuro.include('my-button', class {
-  static template = `<button class="my-button">{{props.text}}</button>`
+  $template = `<button class="my-button">{{props.text}}</button>`
 })
 ```
 
@@ -227,7 +227,7 @@ To implement a lifecycle hook, just define a method on the component with the co
 ```js
 class App {
   text = 'Fetching...'
-  static template = `<div>{{text}}</div>`
+  $template = `<div>{{text}}</div>`
   async afterMount() {
     let response = await fetch('https://jsonplaceholder.typicode.com/todos/1')
     let json = await response.json()

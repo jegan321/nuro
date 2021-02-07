@@ -1,3 +1,4 @@
+import { InjectedProps } from './component-proxy.js'
 import { Component, ComponentClass } from './component.js'
 import { Plugin } from './plugin.js'
 
@@ -11,7 +12,11 @@ export interface GlobalAPI {
 }
 
 interface Mount {
-  (ComponentClass: ComponentClass, element?: Element, props?: Record<string, any>): Component
+  <T extends Component>(
+    ComponentClass: new (props: any) => T,
+    element?: Element,
+    props?: Record<string, any>
+  ): T & InjectedProps
 }
 
 interface Unmount {
