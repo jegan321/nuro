@@ -5,7 +5,7 @@ test('simple template', () => {
 
   class App {
     msg = 'Hello, world'
-    $template = `
+    $template = /*html*/ `
       <div id="app">
         <h1>Test</h1>
         <p>{{msg}}</p>
@@ -27,12 +27,14 @@ test('todo list', () => {
 
   class App {
     tasks = []
-    $template = `
+    $template = /*html*/ `
       <div id="app">
         <h1>Todo List for {{props.name}}</h1>
-        <p $if="tasks.length">Loading...</p>
+        <p $if="!tasks.length">Loading...</p>
         <ul>
-          <li $for="task, i in tasks" :data-index="i">#{{i+1}}: {{task}}</li>
+          <li $for="task, i in tasks" :data-index="i" class="task" $class="{done: task.completed}">
+            #{{i+1}}: {{task.desc}}
+          </li>
         </ul>
       </div>
     `
@@ -41,20 +43,26 @@ test('todo list', () => {
   let app = Nuro.mount(App, document.querySelector('#target'), {name: 'John'})
   expect(document.querySelector('#app h1').innerHTML)
     .toBe('Todo List for John')
-  expect(document.querySelector('#app p'))
-    .toBe(null)
+  expect(document.querySelector('#app p').innerHTML)
+    .toBe('Loading...')
   expect(document.querySelector('#app ul').children.length)
     .toBe(0)
 
-  app.tasks.push('task one', 'task two')
+  app.tasks.push({desc: 'task one', completed: true}, {desc: 'task two', completed: false})
   expect(document.querySelector('#app h1').innerHTML)
     .toBe('Todo List for John')
-  expect(document.querySelector('#app p').innerHTML)
-    .toBe('Loading...')
-  expect(document.querySelector('#app ul [data-index="0"]').innerHTML)
+  expect(document.querySelector('#app p'))
+    .toBe(null)
+
+  expect(document.querySelector('#app ul [data-index="0"]').innerHTML.trim())
     .toBe('#1: task one')
-  expect(document.querySelector('#app ul [data-index="1"]').innerHTML)
+  expect(document.querySelector('#app ul [data-index="0"]').className)
+    .toBe('task done')
+
+  expect(document.querySelector('#app ul [data-index="1"]').innerHTML.trim())
     .toBe('#2: task two')
+  expect(document.querySelector('#app ul [data-index="1"]').className)
+    .toBe('task')
 })
 
 test('nested component', () => {
@@ -68,7 +76,7 @@ test('nested component', () => {
 
   class App {
     msg = 'Hello, world'
-    $template = `
+    $template = /*html*/ `
       <div id="app">
         <h1>Test</h1>
         <search-bar placeholder="Search for something"></search-bar>

@@ -48,11 +48,13 @@ function compileElement(vNode: VNode): string {
   // Beginning of createElement call
   let code = 'h('
 
-  // First argument
+  // First argument: Tag
   code += "'" + vNode.tag + "'"
 
-  // Second argument
-  let attributes = []
+  // Second argument: Attributes
+
+  // Compile each attribute value
+  let compiledAttrs = new Map()
   for (let [key, value] of Object.entries(vNode.attrs)) {
     if (key.startsWith(':')) {
       // Shorthand attribute binding syntax
@@ -64,13 +66,25 @@ function compileElement(vNode: VNode): string {
       // Regular attribute
       value = compileText(value)
     }
-    key = "'" + key + "'"
-    attributes.push(key + ':' + value)
+    compiledAttrs.set(key, value)
   }
-  let joinedAttributes = attributes.join(',')
-  code += ',{' + joinedAttributes + '}'
 
-  // Third argument
+  // Handle $class directive
+  if (vNode.attrs.$class !== undefined) {
+    let staticClassValue = compiledAttrs.has('class') ? compiledAttrs.get('class') : "''"
+    let classExpressionCode = `Object.entries(${vNode.attrs.$class}).reduce((prevC,c)=>c[1]?prevC+=" "+c[0]:prevC,${staticClassValue}).trim()`
+    compiledAttrs.set('class', classExpressionCode)
+    compiledAttrs.delete('$class')
+  }
+
+  // Turn map of compiled attributes into object literal code
+  let attrsCode = []
+  for (let [key, value] of compiledAttrs) {
+    attrsCode.push(`'${key}':${value}`)
+  }
+  code += ',{' + attrsCode.join(',') + '}'
+
+  // Third argument: Children
   if (vNode.children.length > 0) {
     let children: string[] = []
     vNode.children.forEach(vChild => {
