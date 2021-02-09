@@ -94,3 +94,34 @@ test('nested component', () => {
   expect(document.querySelector('#app input').getAttribute('placeholder'))
   .toBe('Search for something')
 })
+
+test('set attributes using $attrs', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class SearchBar {
+    $template = `
+      <input class="search" $attrs="props" />
+    `
+  }
+
+  class App {
+    msg = 'Hello, world'
+    $template = /*html*/ `
+      <div id="app">
+        <search-bar id="search1" class="large" placeholder="Search for something"></search-bar>
+      </div>
+    `
+    $includes = {
+      SearchBar
+    }
+  }
+
+  Nuro.mount(App, document.querySelector('#target'))
+
+  expect(document.querySelector('#app input').getAttribute('id'))
+    .toBe('search1')
+  expect(document.querySelector('#app input').getAttribute('class'))
+    .toBe('search large')
+  expect(document.querySelector('#app input').getAttribute('placeholder'))
+    .toBe('Search for something')
+})

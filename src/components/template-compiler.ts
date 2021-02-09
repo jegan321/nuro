@@ -56,6 +56,10 @@ function compileElement(vNode: VNode): string {
   // Compile each attribute value
   let compiledAttrs = new Map()
   for (let [key, value] of Object.entries(vNode.attrs)) {
+    if (key.startsWith('$')) {
+      // Skip directive attributes
+      continue
+    }
     if (key.startsWith(':')) {
       // Shorthand attribute binding syntax
       key = key.substr(1)
@@ -70,19 +74,32 @@ function compileElement(vNode: VNode): string {
   }
 
   // Handle $class directive
-  if (vNode.attrs.$class !== undefined) {
+  if (vNode.attrs.$class) {
+    // Returns a string with only the classes that have a truthy value
+    // Dynamic classes are concatenated with the static class attribute
     let staticClassValue = compiledAttrs.has('class') ? compiledAttrs.get('class') : "''"
     let classExpressionCode = `Object.entries(${vNode.attrs.$class}).reduce((prevC,c)=>c[1]?prevC+=" "+c[0]:prevC,${staticClassValue}).trim()`
     compiledAttrs.set('class', classExpressionCode)
-    compiledAttrs.delete('$class')
   }
 
   // Turn map of compiled attributes into object literal code
-  let attrsCode = []
-  for (let [key, value] of compiledAttrs) {
-    attrsCode.push(`'${key}':${value}`)
+  let attrsObjectCode =
+    '{' +
+    Array.from(compiledAttrs)
+      .map(([key, value]) => `'${key}':${value}`)
+      .join(',') +
+    '}'
+
+  // Handle $attrs directive
+  if (vNode.attrs.$attrs) {
+    // Merges properties from the $attrs object to the rest of the properties
+    // If there is a class property, concatenate them instead of replacing
+    let attrs = attrsObjectCode
+    let newAttrs = vNode.attrs.$attrs
+    attrsObjectCode = `{...${attrs},...${newAttrs},...{class:(${attrs}.class?(${attrs}.class+' '+(${newAttrs}.class||'')).trim():${newAttrs}.class)}}`
   }
-  code += ',{' + attrsCode.join(',') + '}'
+
+  code += ',' + attrsObjectCode
 
   // Third argument: Children
   if (vNode.children.length > 0) {
