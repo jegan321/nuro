@@ -1,5 +1,4 @@
-import { Component, ComponentClass } from './component.js'
-import { CreateElement } from './create-element.js'
+import { Component, ComponentClass, Render } from './component.js'
 import { VNode } from './vnode.js'
 
 export interface InjectedProps {
@@ -12,7 +11,3 @@ export interface InjectedProps {
 }
 
 export type ComponentProxy = InjectedProps & Component
-
-export interface Render {
-  (createElement: CreateElement): VNode
-}

@@ -1,5 +1,5 @@
-import { Component, ComponentClass } from '../api/component.js'
-import { ComponentProxy, InjectedProps, Render } from '../api/component-proxy.js'
+import { Component, ComponentClass, Render } from '../api/component.js'
+import { ComponentProxy, InjectedProps } from '../api/component-proxy.js'
 import { createElementFactory } from './create-element.js'
 import { DiffEngine } from '../dom/diff-engine.js'
 import { DomPatcher } from '../dom/dom-patcher.js'

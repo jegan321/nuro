@@ -17,6 +17,10 @@ interface RenderComponent extends BaseComponent {
   render: (createElement: CreateElement) => VNode
 }
 
+export interface Render {
+  (createElement: CreateElement): VNode
+}
+
 interface TemplateComponent extends BaseComponent {
   $template: string
   $includes?: Record<string, new () => Component>
