@@ -33,10 +33,14 @@ export class DiffEngine {
       return node => this.domPatcher.removeNode(node)
     }
 
-    if (vOldNode.nodeType === 'text' || vNewNode.nodeType === 'text') {
-      if (vNewNode.text !== vOldNode.text) {
-        return node => this.domPatcher.replaceNode(node, vNewNode)
-      }
+    // If one node is text and the texts don't match or one is not text
+    if (
+      (vOldNode.nodeType === 'text' || vNewNode.nodeType === 'text') &&
+      (vNewNode.text !== vOldNode.text ||
+        vOldNode.nodeType !== 'text' ||
+        vNewNode.nodeType !== 'text')
+    ) {
+      return node => this.domPatcher.replaceNode(node, vNewNode)
     }
 
     if (vNewNode.nodeType === 'component') {

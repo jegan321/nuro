@@ -125,3 +125,36 @@ test('set attributes using $attrs', () => {
   expect(document.querySelector('#app input').getAttribute('placeholder'))
     .toBe('Search for something')
 })
+
+test('nested component with $if', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  class HelloComponent {
+    $template = `
+      <p>Hello</p>
+    `
+  }
+
+  class App {
+    show = true
+    $template = /*html*/ `
+      <div id="app">
+        <h1>Title</h1>
+        <hello-component $if="show"></hello-component>
+      </div>
+    `
+    $includes = {
+      HelloComponent
+    }
+  }
+
+  let app = Nuro.mount(App, document.querySelector('#target'))
+
+  expect(document.querySelector('#app').innerHTML)
+    .toEqual(`<h1>Title</h1><p>Hello</p>`)
+
+  app.show = false
+
+  expect(document.querySelector('#app').innerHTML)
+    .toEqual(`<h1>Title</h1>`)
+})
