@@ -13,7 +13,7 @@ interface BaseComponent {
   afterUnmount?: () => void
 }
 
-interface RenderComponent extends BaseComponent {
+export interface RenderComponent extends BaseComponent {
   render: (createElement: CreateElement) => VNode
 }
 
@@ -21,7 +21,7 @@ export interface Render {
   (createElement: CreateElement): VNode
 }
 
-interface TemplateComponent extends BaseComponent {
+export interface TemplateComponent extends BaseComponent {
   $template: string
   $includes?: Record<string, new () => Component>
 }

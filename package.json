@@ -33,8 +33,7 @@
     "build": "npm run format && npm run compile && npm run bundle",
     "watch": "watch 'npm run compile && npm run bundle' ./src",
     "start": "npm run watch",
-    "test": "npm run build && jest --coverage",
-    "prepublish": "npm run test"
+    "test": "npm run build && jest --coverage"
   },
   "keywords": [
     "framework", "lightweight", "components", "front-end", "web", "javascript", "html"
