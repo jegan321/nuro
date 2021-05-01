@@ -63,8 +63,7 @@ export function getComponentProxy(node: ElementWithNodeContext): ComponentProxy 
 }
 
 export function hasComponentProxy(node: ElementWithNodeContext): boolean {
-  let nodeContext = getOrCreateNodeContext(node)
-  return nodeContext.component != null
+  return node._nuro != null && node._nuro.component != null
 }
 
 export function deleteNodeContext(node: ElementWithNodeContext): void {

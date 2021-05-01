@@ -116,13 +116,23 @@ function bindAllMethods(
 export function unmountComponent(element: Element): boolean {
   if (element != null && hasComponentProxy(element)) {
     let component = getComponentProxy(element)
-    callHook(component, 'beforeUnmount')
+    callHookRecursively(component, 'beforeUnmount')
     deleteNodeContext(element)
-    callHook(component, 'afterUnmount')
+    callHookRecursively(component, 'afterUnmount')
     return true
   } else {
     return false
   }
+}
+
+function callHookRecursively(component: ComponentProxy, hook: string) {
+  Array.from(component.$element.children).forEach(child => {
+    if (hasComponentProxy(child)) {
+      let component = getComponentProxy(child)
+      callHookRecursively(component, hook)
+    }
+  })
+  callHook(component, hook)
 }
 
 export function updateComponent(component: Component): Component {
