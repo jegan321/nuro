@@ -12,11 +12,8 @@ export interface GlobalAPI {
 }
 
 interface Mount {
-  <T extends Component>(
-    ComponentClass: new (props: any) => T,
-    element?: Element,
-    props?: Record<string, any>
-  ): T & InjectedProps
+  <P, T extends Component>(ComponentClass: new (props: P) => T, element?: Element, props?: P): T &
+    InjectedProps
 }
 
 interface Unmount {

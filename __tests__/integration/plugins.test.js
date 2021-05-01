@@ -1,4 +1,4 @@
-let Nuro = require('../../build/dist/nuro')
+let Nuro = require('../../build/dist/nuro.umd.js')
 
 test('install plugin', () => {
 

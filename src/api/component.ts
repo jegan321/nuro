@@ -1,6 +1,22 @@
 import { CreateElement } from './create-element.js'
 import { VNode } from './vnode.js'
 
+export abstract class UserComponent<Props> {
+  $template?: string
+  $includes?: Record<string, new () => Component>
+  props: Props
+  constructor(props: Props) {
+    this.props = props
+  }
+  beforeInit() {}
+  beforeMount() {}
+  afterMount() {}
+  beforeRender() {}
+  afterRender() {}
+  beforeUnmount() {}
+  afterUnmount() {}
+}
+
 interface BaseComponent {
   [state: string]: any
   props?: Record<string, any>

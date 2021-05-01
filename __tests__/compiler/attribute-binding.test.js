@@ -1,4 +1,4 @@
-let Nuro = require('../../build/dist/nuro')
+let Nuro = require('../../build/dist/nuro.umd.js')
 let compileTemplate = Nuro.compileTemplate
 
 test('should bind class attribute', () => {

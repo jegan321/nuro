@@ -1,4 +1,4 @@
-let Nuro = require('../../build/dist/nuro')
+let Nuro = require('../../build/dist/nuro.umd.js')
 
 test('hooks should be called in order', () => {
   document.body.innerHTML = '<div id="target"></div>'
