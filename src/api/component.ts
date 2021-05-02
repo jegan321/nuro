@@ -14,7 +14,6 @@ export abstract class UserComponent<Props> {
   beforeRender() {}
   afterRender() {}
   beforeUnmount() {}
-  afterUnmount() {}
 }
 
 interface BaseComponent {
@@ -26,7 +25,6 @@ interface BaseComponent {
   beforeRender?: () => void
   afterRender?: () => void
   beforeUnmount?: () => void
-  afterUnmount?: () => void
 }
 
 export interface RenderComponent extends BaseComponent {

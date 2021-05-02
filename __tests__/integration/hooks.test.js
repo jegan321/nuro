@@ -40,10 +40,6 @@ test('hooks should be called in order', () => {
       calledHooks.push('beforeUnmount')
     }
 
-    afterUnmount() {
-      calledHooks.push('afterUnmount')
-    }
-
   }
 
   let component = Nuro.mount(TestComponent, document.querySelector('#target'))
@@ -84,7 +80,6 @@ test('hooks should be called in order', () => {
     'render',
     'afterRender',
     'beforeUnmount',
-    'afterUnmount'
   ])
 
 })

@@ -244,7 +244,6 @@ Each hook is listed below:
 5. `afterRender` - After the DOM is updated
 6. `afterMount` - After initial render to the DOM
 7. `beforeUnmount` - Before the component is removed from the DOM
-8. `afterUnmount` - After the component is removed
 
 ## License
 [MIT](https://github.com/jegan321/nuro/blob/master/LICENSE)
