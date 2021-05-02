@@ -240,10 +240,9 @@ Each hook is listed below:
 1. `beforeInit` - After the component instance is created but before reactivity is added
 2. `beforeMount` - Component is fully set up but has not been mounted to the DOM
 3. `beforeRender` - Before every render
-4. `render` - Called for each update to produce the new virtual DOM tree
-5. `afterRender` - After the DOM is updated
-6. `afterMount` - After initial render to the DOM
-7. `beforeUnmount` - Before the component is removed from the DOM
+4. `afterRender` - After every render
+5. `afterMount` - After initial render to the DOM
+6. `beforeUnmount` - Before the component is removed from the DOM
 
 ## License
 [MIT](https://github.com/jegan321/nuro/blob/master/LICENSE)
