@@ -1,5 +1,5 @@
 import { mapVNode } from './map-vnode.js'
-import { removeEventHandler, setEventHandler } from './node-context.js'
+import { hasComponentProxy, removeEventHandler, setEventHandler } from './node-context.js'
 import { NuroError } from '../util/nuro-error.js'
 import { isFunction } from '../util/object-utils.js'
 import { VNode } from '../api/vnode.js'
@@ -44,6 +44,7 @@ export class DomPatcher {
 
   replaceNode(node: Element, vNewNode: VNode): Element {
     let newNode = this.createNode(vNewNode)
+    this.unmountComponent(node)
     node.replaceWith(newNode)
     return newNode
   }
@@ -55,6 +56,7 @@ export class DomPatcher {
 
   mountComponentOnNode(node: Element, vOldNode: VNode, vNewNode: VNode): Element {
     if (vNewNode.componentClass) {
+      this.unmountComponent(node)
       return this.mountComponent(
         vNewNode.componentClass,
         node,

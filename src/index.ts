@@ -10,7 +10,7 @@ import { ComponentProxy } from './api/component-proxy'
 import { Plugin } from './api/plugin'
 import { VNode } from './api/vnode'
 
-let globalAPI: GlobalAPI = {
+const globalAPI: GlobalAPI = {
   mount: mountRootComponent,
   unmount: unmountComponent,
   compileTemplate: compileTemplate,

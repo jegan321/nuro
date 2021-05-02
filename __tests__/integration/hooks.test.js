@@ -127,3 +127,51 @@ test('beforeUnmount hook should be called for each child component', () => {
   expect(childAUnmount).toEqual(true)
   expect(childBUnmount).toEqual(true)
 })
+
+test('beforeUnmount hook should be called for each child component after update replaces a component', () => {
+  document.body.innerHTML = '<div id="target"></div>'
+
+  let childAUnmount = false
+  let childBUnmount = false
+  let parentUnmount = false
+
+  class ChildAComponent {
+    $template = '<div>ChildA</div>'
+    beforeUnmount() {
+      childAUnmount = true
+    }
+  }
+  class ChildBComponent {
+    $template = '<div>ChildB</div>'
+    beforeUnmount() {
+      childBUnmount = true
+    }
+  }
+  document.body.innerHTML = '<div id="app"></div>'
+
+  class ParentComponent {
+    $template = '<div id="app"><child-a-component></child-a-component><child-b-component></child-b-component></div>'
+    $includes = { ChildAComponent, ChildBComponent }
+    beforeUnmount() {
+      parentUnmount = true
+    }
+  }
+
+  class App {
+    show = true
+    $template = /*html*/ `
+      <div id="app">
+        <parent-component $if="show"></parent-component>
+        <div $if="!show">WTF</div>
+      </div>
+    `
+    $includes = { ParentComponent }
+  }
+
+  let app = Nuro.mount(App, document.querySelector('#app'))
+  app.show = false
+
+  expect(parentUnmount).toEqual(true)
+  expect(childAUnmount).toEqual(true)
+  expect(childBUnmount).toEqual(true)
+})
