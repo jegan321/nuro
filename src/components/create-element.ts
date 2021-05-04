@@ -6,7 +6,7 @@ import { ComponentClass } from '../api/component.js'
 
 export function createElementFactory(includes: Map<string, ComponentClass>): CreateElement {
   return function(
-    type: string | (new () => ComponentProxy),
+    type: string | (new (props: any) => ComponentProxy),
     props: Record<string, any> = {},
     children: (VNode | string)[] | VNode | string = []
   ): VNode {
