@@ -109,7 +109,21 @@ class Clicker {
 ```
 
 ## Template Directives
-Template directives are special HTML attributes and tags that add dyanmic behavior, such as if statements and loops.
+Template directives are special HTML attributes and tags that add dynamic behavior, such as if statements and loops.
+
+## Attribute binding
+HTML attributes can be bound to a JavaScript variable by putting a colon in front of the attribute name. This is essentially a shorthand for having an attribute value with a curly braces expression.
+```js
+class Hello {
+  myID = 'my-id'
+  custom = 'Custom attribute data...'
+  $template = `
+    <div :id="myID" :data-custom="custom">
+      Hello
+    </div>
+  `
+}
+```
 
 ## $if directive
 Only renders the element if the condition is truthy
@@ -139,6 +153,35 @@ class Todos {
       <ul>
         <li $for="task in tasks">{{task}}</li>
       </ul>
+    </div>
+  `
+}
+```
+
+## $class directive
+Used to easily toggle classes on and off. The value is an object where the property names are the classes to toggle and the property values are whether the class should be rendered or not.
+```js
+class ActivateButton {
+  selected = false
+  $template = `
+    <button $class="{active: selected} @click="()=>selected=true">
+      Activate
+    </button>
+  `
+}
+```
+
+## $attrs directive
+Used to merge props from an object onto an element or component
+```js
+class Example {
+  myProps = {
+    id: 'my-id',
+    class: 'important'
+  }
+  $template = `
+    <div $attrs="myProps">
+      Example
     </div>
   `
 }
@@ -222,6 +265,53 @@ Nuro.include('my-button', class {
 })
 ```
 
+## Passing Props to Nested Components
+Use props to pass data from a parent component to a child component
+```js
+class ChildComponent { 
+  $template = `<p>Data from parent: {{props.foo}}</p>` 
+}
+class ParentComponent {
+  $template = `
+    <div>
+      <p>Child content below...</p>
+      <child-component foo="Hello!"></child-component>
+    </div>
+  `
+  $includes = {
+    'child-component': ChildComponent
+  }
+}
+Nuro.mount(ParentComponent)
+```
+
+There is a special prop called `children` that will always contain the child nodes of the component:
+```js
+class PictureFrame {
+  $template = `
+    <div class="frame">
+      {{props.children}}
+    </div>
+  `
+}
+class Gallery {
+  $template = `
+    <div>
+      <picture-frame>
+        <img src="photo1.jpg"/>
+      </picture-frame>
+      <picture-frame>
+        <img src="photo2.jpg"/>
+      </picture-frame>
+    </div>
+  `
+  $includes = {
+    PictureFrame
+  }
+}
+Nuro.mount(Gallery)
+```
+
 ## Lifecycle Hooks
 To implement a lifecycle hook, just define a method on the component with the correct name. 
 ```js
@@ -243,6 +333,32 @@ Each hook is listed below:
 4. `afterRender` - After every render
 5. `afterMount` - After initial render to the DOM
 6. `beforeUnmount` - Before the component is removed from the DOM
+
+## TypeScript Support
+```ts
+import { Nuro, Component, CreateElement } from 'nuro'
+
+interface MyProps {
+  id: number
+  message: string
+}
+
+class MyComponent extends Component<MyProps> {
+  render(h: CreateElement) {
+    return h('p', { 'data-message-id': this.props.id }, [
+      this.props.message 
+    ])
+  }
+}
+
+Nuro.mount(MyComponent, element, {
+  id: 1,
+  message: 'Hello, world'
+})
+```
+
+## Contributing
+Pull requests and feedback are welcome. If you find a bug please create an issue.
 
 ## License
 [MIT](https://github.com/jegan321/nuro/blob/master/LICENSE)
