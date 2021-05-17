@@ -1,4 +1,4 @@
-let Nuro = require('../../build/dist/nuro.umd.js')
+let Nuro = require('../../dist/nuro.umd.js')
 let compileTemplate = Nuro.compileTemplate
 
 test('should take all attributes from object literal', () => {

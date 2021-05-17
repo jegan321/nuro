@@ -1,5 +1,5 @@
 const esmImport = require('esm')(module)
-const { camelCaseToKebabCase, isLetter } = esmImport('../../build/compiled/util/string-utils.js')
+const { camelCaseToKebabCase, isLetter } = esmImport('../../compiled/util/string-utils.js')
 
 test('should convert camel case to kebab case', () => {
   expect(camelCaseToKebabCase('my-string-value')).toEqual('my-string-value')

@@ -1,5 +1,5 @@
 const esmImport = require('esm')(module)
-const { isObject, isArray, isFunction } = esmImport('../../build/compiled/util/object-utils.js')
+const { isObject, isArray, isFunction } = esmImport('../../compiled/util/object-utils.js')
 
 test('should test whether a value is an object', () => {
   expect(isObject({})).toEqual(true)

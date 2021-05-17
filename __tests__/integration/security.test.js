@@ -1,4 +1,4 @@
-let Nuro = require('../../build/dist/nuro.umd.js')
+let Nuro = require('../../dist/nuro.umd.js')
 
 test('test safe HTML encoding', () => {
 

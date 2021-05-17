@@ -2,13 +2,13 @@
   "name": "nuro",
   "version": "0.3.12",
   "description": "Lightweight, reactive, component-based UI framework",
-  "main": "./build/dist/nuro.js",
-  "module": "./build/compiled/index.js",
+  "main": "./dist/nuro.js",
+  "module": "./compiled/index.js",
   "exports": {
-    "require": "./build/dist/nuro.js",
-    "import": "./build/compiled/index.js"
+    "require": "./dist/nuro.js",
+    "import": "./compiled/index.js"
   },
-  "types": "./build/compiled/index.d.js",
+  "types": "./compiled/index.d.js",
   "author": {
     "name": "John Egan"
   },
@@ -16,7 +16,8 @@
   "repository": "jegan321/nuro",
   "files": [
     "src",
-    "build"
+    "compiled",
+    "dist"
   ],
   "devDependencies": {
     "esm": "^3.2.25",

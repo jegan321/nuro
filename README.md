@@ -32,13 +32,9 @@ Nuro is a reactive, component-based JavaScript framework which can be used as a 
 * Event handling
 * Automatically encodes HTML from users to prevent script injection
 
-## Compiling from Source
-Running the build script will create an ESM and UMD version of the library in build/dist/
-```bash
-npm run build
-```
-
 ## Installation
+Nuro can be downloaded from npm or the dist directory of this repository.
+
 Install using npm:
 ```bash
 npm install nuro

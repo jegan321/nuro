@@ -1,4 +1,4 @@
-let Nuro = require('../../build/dist/nuro.umd.js')
+let Nuro = require('../../dist/nuro.umd.js')
 
 test('simple state', () => {
   document.body.innerHTML = '<div id="target"></div>'

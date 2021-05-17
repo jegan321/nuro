@@ -1,5 +1,5 @@
 const esmImport = require('esm')(module)
-const { createElementFactory } = esmImport('../../build/compiled/components/create-element.js')
+const { createElementFactory } = esmImport('../../compiled/components/create-element.js')
 
 test('should create a VNode object', () => {
   const createElement = createElementFactory(new Map())

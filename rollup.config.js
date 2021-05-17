@@ -1,15 +1,15 @@
 export default [
   {
-    input: 'build/compiled/index.js',
+    input: 'compiled/index.js',
     output: {
-      file: 'build/dist/nuro.js',
+      file: 'dist/nuro.js',
       format: 'es'
     }
   },
   {
-    input: 'build/compiled/index-umd.js',
+    input: 'compiled/index-umd.js',
     output: {
-      file: 'build/dist/nuro.umd.js',
+      file: 'dist/nuro.umd.js',
       format: 'umd',
       name: 'Nuro'
     }
