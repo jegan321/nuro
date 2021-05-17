@@ -58,7 +58,7 @@ Using Nuro doesn't require a build step so the library can also be included in a
 </script>
 ```
 
-Or use the UMD build:
+Or use the UMD version:
 ```html
 <script src="path/to/nuro.umd.js"></script>
 <script>
