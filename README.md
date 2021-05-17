@@ -27,18 +27,43 @@ Nuro is a reactive, component-based JavaScript framework which can be used as a 
 ## Features
 * Class based components without importing the framework
 * Powerful template syntax
-* Automatically updates when state changes
+* UI automatically updates when data changes
 * Updates only the DOM elements that have changed
 * Event handling
 * Automatically encodes HTML from users to prevent script injection
 
+## Compiling from Source
+Running the build script will create an ESM and UMD version of the library in build/dist/
+```bash
+npm run build
+```
+
 ## Installation
-Install using npm or a script tag
+Install using npm:
 ```bash
 npm install nuro
 ```
+
+Import as an ES Module:
+```js
+import { Nuro } from 'nuro'
+Nuro.mount(MyApp)
+```
+
+Using Nuro doesn't require a build step so the library can also be included in a simple HTML page:
 ```html
-<script src="path/to/nuro.js"></script>
+<script type="module">
+  import { Nuro } from 'path/to/nuro.js'
+  Nuro.mount(MyApp)
+</script>
+```
+
+Or use the UMD build:
+```html
+<script src="path/to/nuro.umd.js"></script>
+<script>
+  Nuro.mount(MyApp)
+</script>
 ```
   
 # Documentation
