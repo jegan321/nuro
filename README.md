@@ -3,19 +3,22 @@
 Nuro is a reactive, component-based JavaScript framework which can be used as a lighter and simpler alternative to frameworks like React or Vue.
 
 ```js
-  class App {
-    name = 'world'
-    $template = `
-      <div id="app">
-        <input @input="handleChange" placeholder="Enter your name"/>
-        <p>Hello, {{name}}</p>
-      </div>
-    `
-    handleChange(event) {
-      this.name = event.target.value
-    }
+import { Nuro } from 'nuro'
+
+class App {
+  name = 'world'
+  $template = `
+    <div id="app">
+      <input @input="handleChange" placeholder="Enter your name"/>
+      <p>Hello, {{name}}</p>
+    </div>
+  `
+  handleChange(event) {
+    this.name = event.target.value
   }
-  Nuro.mount(App)
+}
+
+Nuro.mount(App)
 ```
 
 ## Goals
