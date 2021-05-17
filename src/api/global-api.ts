@@ -4,7 +4,7 @@ import { Plugin } from './plugin.js'
 
 export interface GlobalAPI {
   /**
-   * Mounts a component
+   * Mounts a component to a DOM element and renders the UI
    * @param ComponentClass A class that contains a $template string or a render method
    * @param element The element in the DOM to render the component onto
    * @param props Data for the component
