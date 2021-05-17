@@ -7,8 +7,8 @@ export function camelCaseToKebabCase(camelCase: string): string {
   return camelCase
     .split('')
     .map((char, i) => {
-      // If char is upper case
-      if (char === char.toUpperCase()) {
+      // If char is an upper case letter
+      if (isLetter(char) && char === char.toUpperCase()) {
         // Make it lower case and also add a hyphen if it is not the first char
         if (i === 0) {
           return char.toLowerCase()
@@ -21,4 +21,8 @@ export function camelCaseToKebabCase(camelCase: string): string {
       }
     })
     .join('')
+}
+
+export function isLetter(character: string) {
+  return character.length === 1 && character.toLowerCase() != character.toUpperCase()
 }
