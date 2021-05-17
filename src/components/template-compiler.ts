@@ -17,7 +17,7 @@ export function compileTemplate(template: string): string {
     return cachedCode
   }
   let node = htmlToDom(template)
-  let vNode = mapVNode(node)
+  let vNode = mapVNode(node, false)
   let code = 'with(this){return ' + compileNode(vNode) + '}'
   cache.set(template, code)
   return code
