@@ -94,7 +94,7 @@ Nuro.mount(MyComponent, document.querySelector('#app'), { foo: 'bar' })
 Props are variables you can pass to a component to be used during rendering. They are stored in an object in your component called `props` and can be referenced in your templates:
 ```js
 class Greeter {
-  $template = `<p>Hello, {{props.name}]</p>`
+  $template = `<p>Hello, {{props.name}}</p>`
 }
 Nuro.mount(Greeter, document.querySelector('#app'), { name: 'world' })
 ```
