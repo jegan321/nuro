@@ -128,10 +128,6 @@ class Clicker {
   }
 }
 ```
-
-## Template Directives
-Template directives are special HTML attributes and tags that add dynamic behavior, such as if statements and loops.
-
 ## Attribute binding
 HTML attributes can be bound to a JavaScript variable by putting a colon in front of the attribute name. This is essentially a shorthand for having an attribute value with a curly braces expression.
 ```js
@@ -145,6 +141,21 @@ class Hello {
   `
 }
 ```
+Which is equivalent to:
+```js
+class Hello {
+  myID = 'my-id'
+  custom = 'Custom attribute data...'
+  $template = `
+    <div id="{{myID}}" data-custom="{{custom}}">
+      Hello
+    </div>
+  `
+}
+```
+
+## Template Directives
+Template directives are special HTML attributes that add dynamic behavior, such as if statements and loops.
 
 ## $if directive
 Only renders the element if the condition is truthy
