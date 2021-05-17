@@ -306,12 +306,13 @@ class ParentComponent {
 Nuro.mount(ParentComponent)
 ```
 
-There is a special prop called `children` that will always contain the child nodes of the component:
+## Slots
+A slot is a placeholder element for other DOM content that is passed in by the parent component. This allows a parent component to pass HTML template code to a child component instead of just JavaScript variables like props.
 ```js
 class PictureFrame {
   $template = `
     <div class="frame">
-      {{props.children}}
+      <slot></slot>
     </div>
   `
 }
