@@ -20,11 +20,13 @@
     "dist"
   ],
   "devDependencies": {
+    "@size-limit/file": "^4.12.0",
     "esm": "^3.2.25",
     "jest": "^25.2.6",
     "prettier": "1.19.1",
     "rollup": "^2.48.0",
     "rollup-plugin-terser": "^7.0.2",
+    "size-limit": "^4.12.0",
     "typescript": "^4.1.3"
   },
   "scripts": {
@@ -32,7 +34,8 @@
     "compile": "tsc",
     "bundle": "rollup -c",
     "build": "npm run format && npm run compile && npm run bundle",
-    "test": "npm run build && jest --coverage",
+    "size": "size-limit",
+    "test": "npm run build && jest --coverage && size-limit",
     "start": "npm test",
     "release": "npm test && npm publish"
   },
@@ -44,5 +47,15 @@
     "web",
     "javascript",
     "html"
+  ],
+  "size-limit": [
+    {
+      "limit": "3.5 kB",
+      "path": "dist/nuro.min.js"
+    },
+    {
+      "limit": "3.5 kB",
+      "path": "dist/nuro.umd.min.js"
+    }
   ]
 }
