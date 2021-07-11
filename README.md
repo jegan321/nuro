@@ -22,7 +22,8 @@ Nuro.mount(App)
 ```
 
 ## Goals
-* Lightweight (3kb minified and gzipped)
+* Lightweight (3.5kb minified and gzipped)
+* Zero Dependencies
 * Easy to learn and simple to use
 * Can be used for your entire application or sprinkled in
 * No build step required
