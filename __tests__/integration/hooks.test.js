@@ -92,13 +92,13 @@ test('beforeUnmount hook should be called for each child component', () => {
   let parentUnmount = false
 
   class ChildAComponent {
-    $template = '<div>ChildA</div>'
+    template = '<div>ChildA</div>'
     beforeUnmount() {
       childAUnmount = true
     }
   }
   class ChildBComponent {
-    $template = '<div>ChildB</div>'
+    template = '<div>ChildB</div>'
     beforeUnmount() {
       childBUnmount = true
     }
@@ -106,8 +106,8 @@ test('beforeUnmount hook should be called for each child component', () => {
   document.body.innerHTML = '<div id="app"></div>'
 
   class ParentComponent {
-    $template = '<div id="app"><child-a-component></child-a-component><child-b-component></child-b-component></div>'
-    $includes = { ChildAComponent, ChildBComponent }
+    template = '<div id="app"><child-a-component></child-a-component><child-b-component></child-b-component></div>'
+    includes = { ChildAComponent, ChildBComponent }
     beforeUnmount() {
       parentUnmount = true
     }
@@ -131,13 +131,13 @@ test('beforeUnmount hook should be called for each child component after update 
   let parentUnmount = false
 
   class ChildAComponent {
-    $template = '<div>ChildA</div>'
+    template = '<div>ChildA</div>'
     beforeUnmount() {
       childAUnmount = true
     }
   }
   class ChildBComponent {
-    $template = '<div>ChildB</div>'
+    template = '<div>ChildB</div>'
     beforeUnmount() {
       childBUnmount = true
     }
@@ -145,8 +145,8 @@ test('beforeUnmount hook should be called for each child component after update 
   document.body.innerHTML = '<div id="app"></div>'
 
   class ParentComponent {
-    $template = '<div id="app"><child-a-component></child-a-component><child-b-component></child-b-component></div>'
-    $includes = { ChildAComponent, ChildBComponent }
+    template = '<div id="app"><child-a-component></child-a-component><child-b-component></child-b-component></div>'
+    includes = { ChildAComponent, ChildBComponent }
     beforeUnmount() {
       parentUnmount = true
     }
@@ -154,13 +154,13 @@ test('beforeUnmount hook should be called for each child component after update 
 
   class App {
     show = true
-    $template = /*html*/ `
+    template = /*html*/ `
       <div id="app">
         <parent-component $if="show"></parent-component>
         <div $if="!show">WTF</div>
       </div>
     `
-    $includes = { ParentComponent }
+    includes = { ParentComponent }
   }
 
   let app = Nuro.mount(App, document.querySelector('#app'))

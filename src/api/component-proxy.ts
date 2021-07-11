@@ -5,7 +5,7 @@ export interface InjectedProps {
   props: Record<string, any>
   $element: Element
   $vnode: VNode
-  $includes: Map<string, ComponentClass>
+  includes: Map<string, ComponentClass>
   render: Render
   $update: () => void
 }

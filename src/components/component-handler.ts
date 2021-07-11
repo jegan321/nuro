@@ -48,16 +48,16 @@ export function mountComponent(
 
   applyMixins(component)
 
-  let localIncludes = component.$includes || {}
-  component.$includes = getComponentIncludes(localIncludes, globalIncludes)
+  let localIncludes = component.includes || {}
+  component.includes = getComponentIncludes(localIncludes, globalIncludes)
 
   if (!component.render) {
-    if (component.$template) {
-      let renderMethodCode = compileTemplate(component.$template)
+    if (component.template) {
+      let renderMethodCode = compileTemplate(component.template)
       component.render = new Function('h', renderMethodCode) as Render
     } else {
       throw new NuroError(
-        'Either a render method or a $template string is required in a component class'
+        'Either a render method or a template string is required in a component class'
       )
     }
   }
@@ -137,7 +137,7 @@ function callHookRecursively(element: Element, hook: string) {
 export function updateComponent(component: Component): Component {
   callHook(component, 'beforeRender')
 
-  let createElement = createElementFactory(component.$includes)
+  let createElement = createElementFactory(component.includes)
 
   let newVNode = component.render(createElement)
   if (!newVNode.nodeType) {

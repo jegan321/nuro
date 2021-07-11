@@ -24,7 +24,7 @@ test('when give children as a scalar, should create a VNode object', () => {
 test('when given Map of includes, should be able to use them in function', () => {
   let includes = new Map()
   class MyButton {
-    $template = '<button>My Button</button>'
+    template = '<button>My Button</button>'
   }
   includes.set('my-button', MyButton)
   const createElement = createElementFactory(includes)

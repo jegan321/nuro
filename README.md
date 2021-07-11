@@ -7,7 +7,7 @@ import { Nuro } from 'nuro'
 
 class App {
   name = 'world'
-  $template = `
+  template = `
     <div id="app">
       <input @input="handleChange" placeholder="Enter your name"/>
       <p>Hello, {{name}}</p>
@@ -71,7 +71,7 @@ Or use the UMD version:
 Components are defined using JavaScript classes:
 ```js
 class MyComponent { 
-  $template = `<div id="app">Hello, world</div>` 
+  template = `<div id="app">Hello, world</div>` 
 }
 ```
 Component classes don't require any base class to be extended or functions to be imported. Just add a template and any lifecycle hooks you need and pass it to `Nuro.mount()`. Nuro will instantiate an instance of your component, compile the template and call any hooks automatically.
@@ -94,7 +94,7 @@ Nuro.mount(MyComponent, document.querySelector('#app'), { foo: 'bar' })
 Props are variables you can pass to a component to be used during rendering. They are stored in an object in your component called `props` and can be referenced in your templates:
 ```js
 class Greeter {
-  $template = `<p>Hello, {{props.name}}</p>`
+  template = `<p>Hello, {{props.name}}</p>`
 }
 Nuro.mount(Greeter, document.querySelector('#app'), { name: 'world' })
 ```
@@ -104,7 +104,7 @@ State is data that can be stored in your component and persist between renders. 
 ```js
 class App {
   msg = "My state variable"
-  $template = `<div>{{msg}}</div>`
+  template = `<div>{{msg}}</div>`
 }
 Nuro.mount(App)
 ```
@@ -114,7 +114,7 @@ Changing state or props on a component instance will automatically trigger a re-
 ```js
 class Status {
   text = 'Waiting...'
-  $template = `<p>{{text}}</p>`
+  template = `<p>{{text}}</p>`
 }
 let status = Nuro.mount(Status)
 setTimeout(() => status.text = 'Done!', 1000)
@@ -125,7 +125,7 @@ Component state can also be changed internally using event handlers. Just add an
 ```js
 class Clicker {
   count = 0
-  $template = `<button @click="increment">Clicked {{count}} times</button>`
+  template = `<button @click="increment">Clicked {{count}} times</button>`
   increment() {
     this.count++
   }
@@ -137,7 +137,7 @@ HTML attributes can be bound to a JavaScript variable by putting a colon in fron
 class Hello {
   myID = 'my-id'
   custom = 'Custom attribute data...'
-  $template = `
+  template = `
     <div :id="myID" :data-custom="custom">
       Hello
     </div>
@@ -149,7 +149,7 @@ Which is equivalent to:
 class Hello {
   myID = 'my-id'
   custom = 'Custom attribute data...'
-  $template = `
+  template = `
     <div id="{{myID}}" data-custom="{{custom}}">
       Hello
     </div>
@@ -165,7 +165,7 @@ Only renders the element if the condition is truthy
 ```js
 class Peekaboo {
   show = false
-  $template = `
+  template = `
     <div>
       <button @click="toggleText">{{show ? 'Hide' : 'Show'}}</button>
       <p $if="show">Peekaboo!</p>
@@ -182,7 +182,7 @@ Renders a list of elements
 ```js
 class Todos {
   tasks = ['First', 'Second', 'Third']
-  $template = `
+  template = `
     <div>
       <h1>Todo List</h1>
       <ul>
@@ -198,7 +198,7 @@ Used to easily toggle classes on and off. The value is an object where the prope
 ```js
 class ActivateButton {
   selected = false
-  $template = `
+  template = `
     <button $class="{active: selected} @click="()=>selected=true">
       Activate
     </button>
@@ -214,7 +214,7 @@ class Example {
     id: 'my-id',
     class: 'important'
   }
-  $template = `
+  template = `
     <div $attrs="myProps">
       Example
     </div>
@@ -269,19 +269,19 @@ All templates are automatically compiled to render methods behind the scenes whe
 Render methods are the most flexible way to implement components since you have the full power of JavaScript. If there is some logic that is awkward to represent as a template (such as dynamic tag names) you may want to use render methods instead. However, they tend to be tedious to write and hard to read for large components. 
 
 ## Nested Components
-To include components inside other components, use an `$includes` object:
+To include components inside other components, use an `includes` object:
 ```js
 class ChildComponent { 
-  $template = `<p>Child component</p>` 
+  template = `<p>Child component</p>` 
 }
 class ParentComponent {
-  $template = `
+  template = `
     <div>
       <p>Child content below...</p>
       <child-component></child-component>
     </div>
   `
-  $includes = {
+  includes = {
     'child-component': ChildComponent
   }
 }
@@ -289,14 +289,14 @@ Nuro.mount(ParentComponent)
 ```
 Nuro is smart enough to convert PascalCase to kebab-case so you can also use the shorthand:
 ```js
-$includes = {
+includes = {
   ChildComponent
 }
 ```
 Or register a component globally so it can be included in all other components in your app:
 ```js
 Nuro.include('my-button', class {
-  $template = `<button class="my-button">{{props.text}}</button>`
+  template = `<button class="my-button">{{props.text}}</button>`
 })
 ```
 
@@ -304,16 +304,16 @@ Nuro.include('my-button', class {
 Use props to pass data from a parent component to a child component
 ```js
 class ChildComponent { 
-  $template = `<p>Data from parent: {{props.foo}}</p>` 
+  template = `<p>Data from parent: {{props.foo}}</p>` 
 }
 class ParentComponent {
-  $template = `
+  template = `
     <div>
       <p>Child content below...</p>
       <child-component foo="Hello!"></child-component>
     </div>
   `
-  $includes = {
+  includes = {
     'child-component': ChildComponent
   }
 }
@@ -324,14 +324,14 @@ Nuro.mount(ParentComponent)
 A slot is a placeholder element for other DOM content that is passed in by the parent component. This allows a parent component to pass HTML template code to a child component instead of just JavaScript variables like props.
 ```js
 class PictureFrame {
-  $template = `
+  template = `
     <div class="frame">
       <slot></slot>
     </div>
   `
 }
 class Gallery {
-  $template = `
+  template = `
     <div>
       <picture-frame>
         <img src="photo1.jpg"/>
@@ -341,7 +341,7 @@ class Gallery {
       </picture-frame>
     </div>
   `
-  $includes = {
+  includes = {
     PictureFrame
   }
 }
@@ -353,7 +353,7 @@ To implement a lifecycle hook, just define a method on the component with the co
 ```js
 class App {
   text = 'Fetching...'
-  $template = `<div>{{text}}</div>`
+  template = `<div>{{text}}</div>`
   async afterMount() {
     let response = await fetch('https://jsonplaceholder.typicode.com/todos/1')
     let json = await response.json()

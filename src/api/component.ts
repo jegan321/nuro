@@ -2,8 +2,8 @@ import { CreateElement } from './create-element.js'
 import { VNode } from './vnode.js'
 
 export abstract class UserComponent<Props> {
-  $template?: string
-  $includes?: Record<string, any>
+  template?: string
+  includes?: Record<string, any>
   props: Props
   constructor(props: Props) {
     this.props = props
@@ -36,8 +36,8 @@ export interface Render {
 }
 
 export interface TemplateComponent extends BaseComponent {
-  $template: string
-  $includes?: Record<string, any>
+  template: string
+  includes?: Record<string, any>
 }
 
 export type Component = RenderComponent | TemplateComponent

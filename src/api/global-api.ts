@@ -5,7 +5,7 @@ import { Plugin } from './plugin.js'
 export interface GlobalAPI {
   /**
    * Mounts a component to a DOM element and renders the UI
-   * @param ComponentClass A class that contains a $template string or a render method
+   * @param ComponentClass A class that contains a template string or a render method
    * @param element The element in the DOM to render the component onto
    * @param props Data for the component
    * @returns An instance of ComponentClass with reactivity added
@@ -29,7 +29,7 @@ export interface GlobalAPI {
 
   /**
    * Allows the given component to be referenced from any template inside the application
-   * without using the $includes object
+   * without using the includes object
    * @param componentName The name of the tag used in the template to reference the component
    * @param ComponentClass The component to include
    */

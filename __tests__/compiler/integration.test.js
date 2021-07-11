@@ -5,7 +5,7 @@ test('simple template', () => {
 
   class App {
     msg = 'Hello, world'
-    $template = /*html*/ `
+    template = /*html*/ `
       <div id="app">
         <h1>Test</h1>
         <p>{{msg}}</p>
@@ -27,7 +27,7 @@ test('todo list', () => {
 
   class App {
     tasks = []
-    $template = /*html*/ `
+    template = /*html*/ `
       <div id="app">
         <h1>Todo List for {{props.name}}</h1>
         <p $if="!tasks.length">Loading...</p>
@@ -69,20 +69,20 @@ test('nested component', () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class SearchBar {
-    $template = `
+    template = `
       <input :placeholder="props.placeholder" />
     `
   }
 
   class App {
     msg = 'Hello, world'
-    $template = /*html*/ `
+    template = /*html*/ `
       <div id="app">
         <h1>Test</h1>
         <search-bar placeholder="Search for something"></search-bar>
       </div>
     `
-    $includes = {
+    includes = {
       SearchBar
     }
   }
@@ -99,19 +99,19 @@ test('set attributes using $attrs', () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class SearchBar {
-    $template = `
+    template = `
       <input class="search" $attrs="props" />
     `
   }
 
   class App {
     msg = 'Hello, world'
-    $template = /*html*/ `
+    template = /*html*/ `
       <div id="app">
         <search-bar id="search1" class="large" placeholder="Search for something"></search-bar>
       </div>
     `
-    $includes = {
+    includes = {
       SearchBar
     }
   }
@@ -130,20 +130,20 @@ test('nested component with $if', () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class HelloComponent {
-    $template = `
+    template = `
       <p>Hello</p>
     `
   }
 
   class App {
     show = true
-    $template = /*html*/ `
+    template = /*html*/ `
       <div id="app">
         <h1>Title</h1>
         <hello-component $if="show"></hello-component>
       </div>
     `
-    $includes = {
+    includes = {
       HelloComponent
     }
   }

@@ -23,7 +23,7 @@ test('add mixin', () => {
 
   let component = Nuro.mount(class {
     foo = 'foo value'
-    $template = '<div></div>'
+    template = '<div></div>'
   })
   expect(hookCalled).toBe(true)
   expect(dataFromComponent).toBe('foo value')
