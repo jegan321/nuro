@@ -548,6 +548,34 @@
             let classExpressionCode = `Object.entries(${vNode.attrs.$class}).reduce((prevC,c)=>c[1]?prevC+=" "+c[0]:prevC,${staticClassValue}).trim()`;
             compiledAttrs.set('class', classExpressionCode);
         }
+        // Handle $bind directive
+        if (vNode.attrs.$bind) {
+            const tag = vNode.tag;
+            const type = vNode.attrs.type;
+            // Uses different properties and events for different input elements
+            // TODO: Implement radio buttons
+            let propAndEvent;
+            if (tag === 'input' && type === 'checkbox') {
+                // Checkbox
+                propAndEvent = { prop: 'checked', event: 'change' };
+            }
+            else if (tag === 'input') {
+                // Text
+                propAndEvent = { prop: 'value', event: 'input' };
+            }
+            else if (tag === 'textarea') {
+                // Textarea
+                propAndEvent = { prop: 'value', event: 'input' };
+            }
+            else if (tag === 'select') {
+                // Select dropdown
+                propAndEvent = { prop: 'value', event: 'change' };
+            }
+            if (propAndEvent) {
+                compiledAttrs.set(propAndEvent.prop, vNode.attrs.$bind);
+                compiledAttrs.set('@' + propAndEvent.event, `(e)=>{this.${vNode.attrs.$bind}=e.target.${propAndEvent.prop};this.$update()}`);
+            }
+        }
         // Turn map of compiled attributes into object literal code
         let attrsObjectCode = '{' +
             Array.from(compiledAttrs)

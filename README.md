@@ -194,6 +194,28 @@ class Todos {
 }
 ```
 
+## $bind directive
+Used for two-way binding of form inputs. When the UI changes the data property changes and vice versa. Works with inputs, textareas and select elements.
+```js
+class UserForm {
+  name = ''
+  admin = false
+  template = `
+    <form @submit="handleSubmit">
+      <label>Name: </label>
+      <input $bind="name"><br>
+      <label>Is admin: </label>
+      <input type="checkbox" $bind="admin"><br>
+      <input type="submit">
+    </form>
+  `
+  handleSubmit(e) {
+    e.preventDefault()
+    alert(`Name: ${this.name}, Admin: ${this.admin}`)
+  }
+}
+```
+
 ## $class directive
 Used to easily toggle classes on and off. The value is an object where the property names are the classes to toggle and the property values are whether the class should be rendered or not.
 ```js

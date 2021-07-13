@@ -50,11 +50,11 @@
   ],
   "size-limit": [
     {
-      "limit": "3.5 kB",
+      "limit": "3.7 kB",
       "path": "dist/nuro.min.js"
     },
     {
-      "limit": "3.5 kB",
+      "limit": "3.7 kB",
       "path": "dist/nuro.umd.min.js"
     }
   ]
