@@ -1,6 +1,6 @@
 let Nuro = require('../../dist/nuro.umd.js')
 
-test('update state', () => {
+test('update state', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class TestComponent {
@@ -23,14 +23,16 @@ test('update state', () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app" count="0">test</button>`)
   document.getElementById('app').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app" count="1">test</button>`)
   document.getElementById('app').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app" count="2">clicked twice</button>`)
 })
 
-test('update nested state object', () => {
+test('update nested state object', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class TestComponent {
@@ -51,11 +53,12 @@ test('update nested state object', () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">1</button>`)
   document.getElementById('app').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">2</button>`)
 })
 
-test('update nested state array', () => {
+test('update nested state array', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class TestComponent {
@@ -74,11 +77,12 @@ test('update nested state array', () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">two</button>`)
   document.getElementById('app').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">three</button>`)
 })
 
-test('update nested components', () => {
+test('update nested components', async () => {
   document.body.innerHTML = ''
   
   class Counter {
@@ -108,6 +112,7 @@ test('update nested components', () => {
     .toEqual(`<button id="counter-2">0</button>`)
 
   document.getElementById('counter-1').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('counter-1').outerHTML)
     .toEqual(`<button id="counter-1">1</button>`)
   expect(document.getElementById('counter-2').outerHTML)
@@ -116,13 +121,14 @@ test('update nested components', () => {
   document.getElementById('counter-2').click()
   document.getElementById('counter-2').click()
   document.getElementById('counter-2').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('counter-1').outerHTML)
     .toEqual(`<button id="counter-1">1</button>`)
   expect(document.getElementById('counter-2').outerHTML)
     .toEqual(`<button id="counter-2">3</button>`)
 })
 
-test('update parent component without resetting child component state', () => {
+test('update parent component without resetting child component state', async () => {
   document.body.innerHTML = ''
   
   class Child {
@@ -152,16 +158,18 @@ test('update parent component without resetting child component state', () => {
     .toEqual(`<div id="app"><button id="parent">Parent</button><button id="child">Child</button></div>`)
 
   document.getElementById('child').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app"><button id="parent">Parent</button><button id="child">Child updated</button></div>`)
 
   document.getElementById('parent').click()
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app"><button id="parent">Parent updated</button><button id="child">Child updated</button></div>`)
   
 })
 
-test('update child props when parent state updates', () => {
+test('update child props when parent state updates', async () => {
   document.body.innerHTML = ''
   
   class Child {
@@ -185,6 +193,7 @@ test('update child props when parent state updates', () => {
     .toEqual(`<div id="app"><div id="child">original</div></div>`)
 
   parent.foo = 'updated'
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
   .toEqual(`<div id="app"><div id="child">updated</div></div>`)
   

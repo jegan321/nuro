@@ -695,6 +695,14 @@
         });
     }
 
+    let updateIsPending = false;
+    function setPendingUpdateFlag(newValue) {
+        updateIsPending = newValue;
+    }
+    function isUpdatePending() {
+        return updateIsPending;
+    }
+
     let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps);
     function mountRootComponent(ComponentClass, element, props = {}) {
         if (!element) {
@@ -725,7 +733,17 @@
         component.props.children = children;
         let componentProxy = createComponentProxy(component);
         component.$update = function () {
-            updateComponent(component);
+            // If there is a pending update, cancel it
+            if (component.$pendingUpdate) {
+                cancelAnimationFrame(component.$pendingUpdate);
+            }
+            // Defer the update so it runs at the next animation frame
+            // This minimizes the number of actual DOM updates when multiple
+            // data properties are changed
+            component.$pendingUpdate = requestAnimationFrame(() => {
+                updateComponent(component);
+            });
+            setPendingUpdateFlag(true);
         };
         bindAllMethods(component, componentProxy, ComponentClass);
         callHook(componentProxy, 'beforeMount');
@@ -774,6 +792,7 @@
     }
     function updateComponent(component) {
         callHook(component, 'beforeRender');
+        setPendingUpdateFlag(false);
         let createElement = createElementFactory(component.includes);
         let newVNode = component.render(createElement);
         if (!newVNode.nodeType) {
@@ -800,13 +819,30 @@
         }
     }
 
+    function afterDomUpdate() {
+        return new Promise(resolve => {
+            waitForPendingUpdatesToComplete(resolve);
+        });
+    }
+    function waitForPendingUpdatesToComplete(resolve) {
+        requestAnimationFrame(() => {
+            if (isUpdatePending()) {
+                waitForPendingUpdatesToComplete(resolve);
+            }
+            else {
+                resolve();
+            }
+        });
+    }
+
     const globalAPI = {
         mount: mountRootComponent,
         unmount: unmountComponent,
         compileTemplate: compileTemplate,
         include: include,
         mixin: addMixin,
-        install: installPlugin
+        install: installPlugin,
+        afterUpdate: afterDomUpdate
     };
 
     return globalAPI;

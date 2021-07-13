@@ -1,6 +1,6 @@
 let Nuro = require('../../dist/nuro.umd.js')
 
-test('hooks should be called in order', () => {
+test('hooks should be called in order', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   let calledHooks = []
@@ -54,6 +54,7 @@ test('hooks should be called in order', () => {
   ])
 
   component.msg = "updated"
+  await Nuro.afterUpdate()
 
   expect(calledHooks).toEqual([
     'beforeInit',
@@ -84,7 +85,7 @@ test('hooks should be called in order', () => {
 
 })
 
-test('beforeUnmount hook should be called for each child component', () => {
+test('beforeUnmount hook should be called for each child component', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   let childAUnmount = false
@@ -123,7 +124,7 @@ test('beforeUnmount hook should be called for each child component', () => {
   expect(childBUnmount).toEqual(true)
 })
 
-test('beforeUnmount hook should be called for each child component after update replaces a component', () => {
+test('beforeUnmount hook should be called for each child component after update replaces a component', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   let childAUnmount = false
@@ -165,6 +166,7 @@ test('beforeUnmount hook should be called for each child component after update 
 
   let app = Nuro.mount(App, document.querySelector('#app'))
   app.show = false
+  await Nuro.afterUpdate()
 
   expect(parentUnmount).toEqual(true)
   expect(childAUnmount).toEqual(true)

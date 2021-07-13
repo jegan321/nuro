@@ -19,6 +19,7 @@ import { compileTemplate } from './template-compiler.js'
 import { globalIncludes } from './includes.js'
 import { camelCaseToKebabCase } from '../util/string-utils.js'
 import { applyMixins } from './mixins.js'
+import { setPendingUpdateFlag } from './pending-update-tracker.js'
 
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
@@ -70,7 +71,18 @@ export function mountComponent(
   let componentProxy = createComponentProxy(component)
 
   component.$update = function() {
-    updateComponent(component)
+    // If there is a pending update, cancel it
+    if (component.$pendingUpdate) {
+      cancelAnimationFrame(component.$pendingUpdate)
+    }
+
+    // Defer the update so it runs at the next animation frame
+    // This minimizes the number of actual DOM updates when multiple
+    // data properties are changed
+    component.$pendingUpdate = requestAnimationFrame(() => {
+      updateComponent(component)
+    })
+    setPendingUpdateFlag(true)
   }
 
   bindAllMethods(component, componentProxy, ComponentClass)
@@ -137,12 +149,15 @@ function callHookRecursively(element: Element, hook: string) {
 export function updateComponent(component: Component): Component {
   callHook(component, 'beforeRender')
 
+  setPendingUpdateFlag(false)
+
   let createElement = createElementFactory(component.includes)
 
   let newVNode = component.render(createElement)
   if (!newVNode.nodeType) {
     throw new NuroError('Component render method did not return VNode')
   }
+
   let diffEngine = new DiffEngine(domPatcher)
   let newNode = diffEngine.reconcile(component.$element, component.$vnode, newVNode)
 

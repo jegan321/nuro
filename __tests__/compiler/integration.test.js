@@ -22,7 +22,7 @@ test('simple template', () => {
 })
 
 
-test('todo list', () => {
+test('todo list', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class App {
@@ -49,6 +49,7 @@ test('todo list', () => {
     .toBe(0)
 
   app.tasks.push({desc: 'task one', completed: true}, {desc: 'task two', completed: false})
+  await Nuro.afterUpdate()
   expect(document.querySelector('#app h1').innerHTML)
     .toBe('Todo List for John')
   expect(document.querySelector('#app p'))
@@ -126,7 +127,7 @@ test('set attributes using $attrs', () => {
     .toBe('Search for something')
 })
 
-test('nested component with $if', () => {
+test('nested component with $if', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class HelloComponent {
@@ -154,6 +155,7 @@ test('nested component with $if', () => {
     .toEqual(`<h1>Title</h1><p>Hello</p>`)
 
   app.show = false
+  await Nuro.afterUpdate()
 
   expect(document.querySelector('#app').innerHTML)
     .toEqual(`<h1>Title</h1>`)

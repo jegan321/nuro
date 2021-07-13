@@ -45,7 +45,7 @@ test('mount should return component proxy', () => {
     .toEqual(`Hello`)
 })
 
-test('update component state after mounting', () => {
+test('update component state after mounting', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class TestComponent {
@@ -60,11 +60,12 @@ test('update component state after mounting', () => {
     .toEqual(`<div id="app">Hello</div>`)
 
   testComponent.msg = 'Updated message'
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app">Updated message</div>`)
 })
 
-test('update component props after mounting', () => {
+test('update component props after mounting', async () => {
   document.body.innerHTML = '<div id="target"></div>'
 
   class TestComponent {
@@ -82,11 +83,12 @@ test('update component props after mounting', () => {
   testComponent.props = {
     msg: 'Updated message'
   }
+  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app">Updated message</div>`)
 })
 
-test('mount on the same element twice with different props', () => {
+test('mount on the same element twice with different props', async () => {
   document.body.innerHTML = '<div id="app"></div>'
 
   class TestComponent {

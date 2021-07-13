@@ -47,6 +47,12 @@ export interface GlobalAPI {
    * @param options Parameters for the plugin
    */
   install: Install
+
+  /**
+   * Returns a promise that can be used to know when the DOM has been updated
+   * @returns a Promise that resolves when the actual DOM has been updated
+   */
+  afterUpdate: AfterUpdate
 }
 
 interface Mount {
@@ -72,4 +78,8 @@ interface Mixin {
 
 interface Install {
   (plugin: Plugin, options: Record<string, unknown>): void
+}
+
+interface AfterUpdate {
+  (): void
 }
