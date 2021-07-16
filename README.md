@@ -6,11 +6,11 @@ Nuro is a reactive, component-based JavaScript framework which can be used as a 
 import { Nuro } from 'nuro'
 
 class App {
-  name = ''
+  name = 'world'
   template = `
     <div id="app">
-      <input $bind="name" placeholder="Enter your name"/>
-      <p>Hello, {{name}}</p>
+      Name: <input $bind="name"/> 
+      Hello, {{name}}!
     </div>
   `
 }
