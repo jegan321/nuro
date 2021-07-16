@@ -79,7 +79,7 @@ Mounting will render the initial version of your UI using the default state of t
 ```js
 Nuro.mount(MyComponent)
 ```
-If you want to mount on a specific element instead, you can provid the element as the second argument:
+If you want to mount on a specific element instead, you can provide the element as the second argument:
 ```js
 Nuro.mount(MyComponent, document.querySelector('#app'))
 ```
