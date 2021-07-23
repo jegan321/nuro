@@ -834,7 +834,7 @@ function setProps(node, props) {
 }
 
 const installedPlugins = [];
-function installPlugin(plugin, options = {}) {
+function installPlugin(plugin, options) {
     if (!installedPlugins.includes(plugin)) {
         plugin.install(this, options);
         installedPlugins.push(plugin);
