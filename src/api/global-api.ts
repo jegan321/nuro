@@ -77,7 +77,7 @@ interface Mixin {
 }
 
 interface Install {
-  (plugin: Plugin, options?: unknown): void
+  (plugin: Plugin, options?: any): void
 }
 
 interface AfterUpdate {
