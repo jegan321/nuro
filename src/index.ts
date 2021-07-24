@@ -9,7 +9,6 @@ import { UserComponent, ComponentClass } from './api/component'
 import { ComponentProxy } from './api/component-proxy'
 import { Plugin } from './api/plugin'
 import { VNode } from './api/vnode'
-import { afterDomUpdate } from './components/after-update.js'
 
 const globalAPI: GlobalAPI = {
   mount: mountRootComponent,
@@ -17,8 +16,7 @@ const globalAPI: GlobalAPI = {
   compileTemplate: compileTemplate,
   include: include,
   mixin: addMixin,
-  install: installPlugin,
-  afterUpdate: afterDomUpdate
+  install: installPlugin
 }
 
 export {

@@ -54,7 +54,6 @@ test('hooks should be called in order', async () => {
   ])
 
   component.msg = "updated"
-  await Nuro.afterUpdate()
 
   expect(calledHooks).toEqual([
     'beforeInit',
@@ -166,7 +165,6 @@ test('beforeUnmount hook should be called for each child component after update 
 
   let app = Nuro.mount(App, document.querySelector('#app'))
   app.show = false
-  await Nuro.afterUpdate()
 
   expect(parentUnmount).toEqual(true)
   expect(childAUnmount).toEqual(true)

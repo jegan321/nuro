@@ -407,14 +407,6 @@
         }
     }
 
-    let updateIsPending = false;
-    function setPendingUpdateFlag(newValue) {
-        updateIsPending = newValue;
-    }
-    function isUpdatePending() {
-        return updateIsPending;
-    }
-
     function createComponentProxy(component) {
         return new Proxy(component, proxyHandler);
     }
@@ -451,35 +443,18 @@
         let component = getComponent(obj);
         if (prop === 'props') {
             component.$vnode.attrs = value;
-            component.$update();
         }
-        else {
-            requestAsyncUpdate(component);
-        }
+        component.$update();
         return true;
     }
     function handleDelete(obj, prop) {
         delete obj[prop];
         let component = getComponent(obj);
-        requestAsyncUpdate(component);
+        component.$update();
         return true;
     }
     function getComponent(obj) {
         return obj.$component != null ? obj.$component : obj;
-    }
-    function requestAsyncUpdate(component) {
-        // If there is a pending update, cancel it
-        if (component.$pendingUpdate) {
-            cancelAnimationFrame(component.$pendingUpdate);
-        }
-        // Defer the update so it runs at the next animation frame
-        // This minimizes the number of actual DOM updates when multiple
-        // data properties are changed
-        component.$pendingUpdate = requestAnimationFrame(() => {
-            component.$update();
-            setPendingUpdateFlag(false);
-        });
-        setPendingUpdateFlag(true);
     }
 
     function callHook(component, hookName) {
@@ -598,7 +573,7 @@
             }
             if (propAndEvent) {
                 compiledAttrs.set(propAndEvent.prop, vNode.attrs.$bind);
-                compiledAttrs.set('@' + propAndEvent.event, `(e)=>{this.${vNode.attrs.$bind}=e.target.${propAndEvent.prop};this.$update()}`);
+                compiledAttrs.set('@' + propAndEvent.event, `(e)=>{this.$update({${vNode.attrs.$bind}:e.target.${propAndEvent.prop}})}`);
             }
         }
         // Turn map of compiled attributes into object literal code
@@ -777,7 +752,10 @@
         component.props = props;
         component.props.children = children;
         let componentProxy = createComponentProxy(component);
-        component.$update = function () {
+        component.$update = function (newData) {
+            if (newData && isObject(newData)) {
+                Object.assign(component, newData);
+            }
             updateComponent(component);
         };
         bindAllMethods(component, componentProxy, ComponentClass);
@@ -853,30 +831,13 @@
         }
     }
 
-    function afterDomUpdate() {
-        return new Promise(resolve => {
-            waitForPendingUpdatesToComplete(resolve);
-        });
-    }
-    function waitForPendingUpdatesToComplete(resolve) {
-        requestAnimationFrame(() => {
-            if (isUpdatePending()) {
-                waitForPendingUpdatesToComplete(resolve);
-            }
-            else {
-                resolve();
-            }
-        });
-    }
-
     const globalAPI = {
         mount: mountRootComponent,
         unmount: unmountComponent,
         compileTemplate: compileTemplate,
         include: include,
         mixin: addMixin,
-        install: installPlugin,
-        afterUpdate: afterDomUpdate
+        install: installPlugin
     };
 
     return globalAPI;

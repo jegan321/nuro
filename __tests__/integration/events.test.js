@@ -19,7 +19,6 @@ test('click call function', async () => {
 
   // Simulate a click
   document.getElementById('target').click()
-  await Nuro.afterUpdate()
 
   expect(success).toEqual(true)
 })
@@ -43,7 +42,6 @@ test('click call method', async () => {
 
   // Simulate a click
   document.getElementById('target').click()
-  await Nuro.afterUpdate()
 
   expect(success).toEqual(true)
 })
@@ -68,7 +66,6 @@ test('click call method using instance variable', async () => {
 
   // Simulate a click
   document.getElementById('target').click()
-  await Nuro.afterUpdate()
 
   expect(result).toEqual('my var')
 })
@@ -94,15 +91,12 @@ test('toggle event listener', async () => {
   let component = Nuro.mount(TestComponent, window.document.querySelector('#target'))
 
   document.getElementById('target').click()
-  await Nuro.afterUpdate()
 
   expect(component.clickCount).toEqual(1)
 
   component.clickEnabled = false
-  await Nuro.afterUpdate()
 
   document.getElementById('target').click()
-  await Nuro.afterUpdate()
 
   expect(component.clickCount).toEqual(1)
 

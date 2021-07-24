@@ -10,7 +10,7 @@ import {
   setComponentProxy
 } from '../dom/node-context.js'
 import { createComponentProxy } from './proxy-handler.js'
-import { getMethodNames } from '../util/object-utils.js'
+import { getMethodNames, isObject } from '../util/object-utils.js'
 import { VNode } from '../api/vnode.js'
 import { callHook } from './hooks.js'
 import { mapVNode } from '../dom/map-vnode.js'
@@ -19,7 +19,6 @@ import { compileTemplate } from './template-compiler.js'
 import { globalIncludes } from './includes.js'
 import { camelCaseToKebabCase } from '../util/string-utils.js'
 import { applyMixins } from './mixins.js'
-import { setPendingUpdateFlag } from './pending-update-tracker.js'
 
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps)
 
@@ -70,7 +69,10 @@ export function mountComponent(
 
   let componentProxy = createComponentProxy(component)
 
-  component.$update = function() {
+  component.$update = function(newData?: Record<string, any>) {
+    if (newData && isObject(newData)) {
+      Object.assign(component, newData)
+    }
     updateComponent(component)
   }
 

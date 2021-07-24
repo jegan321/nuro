@@ -108,7 +108,7 @@ function compileElement(vNode: VNode): string {
       compiledAttrs.set(propAndEvent.prop, vNode.attrs.$bind)
       compiledAttrs.set(
         '@' + propAndEvent.event,
-        `(e)=>{this.${vNode.attrs.$bind}=e.target.${propAndEvent.prop};this.$update()}`
+        `(e)=>{this.$update({${vNode.attrs.$bind}:e.target.${propAndEvent.prop}})}`
       )
     }
   }

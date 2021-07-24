@@ -8,7 +8,7 @@ export interface InjectedProps {
   $pendingUpdate: number
   includes: Map<string, ComponentClass>
   render: Render
-  $update: () => void
+  $update: (newData?: Record<string, any>) => void
 }
 
 export type ComponentProxy = InjectedProps & Component

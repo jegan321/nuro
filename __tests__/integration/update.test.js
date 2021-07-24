@@ -23,11 +23,9 @@ test('update state', async () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app" count="0">test</button>`)
   document.getElementById('app').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app" count="1">test</button>`)
   document.getElementById('app').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app" count="2">clicked twice</button>`)
 })
@@ -53,7 +51,6 @@ test('update nested state object', async () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">1</button>`)
   document.getElementById('app').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">2</button>`)
 })
@@ -77,7 +74,6 @@ test('update nested state array', async () => {
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">two</button>`)
   document.getElementById('app').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<button id="app">three</button>`)
 })
@@ -112,7 +108,6 @@ test('update nested components', async () => {
     .toEqual(`<button id="counter-2">0</button>`)
 
   document.getElementById('counter-1').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('counter-1').outerHTML)
     .toEqual(`<button id="counter-1">1</button>`)
   expect(document.getElementById('counter-2').outerHTML)
@@ -121,7 +116,6 @@ test('update nested components', async () => {
   document.getElementById('counter-2').click()
   document.getElementById('counter-2').click()
   document.getElementById('counter-2').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('counter-1').outerHTML)
     .toEqual(`<button id="counter-1">1</button>`)
   expect(document.getElementById('counter-2').outerHTML)
@@ -158,12 +152,10 @@ test('update parent component without resetting child component state', async ()
     .toEqual(`<div id="app"><button id="parent">Parent</button><button id="child">Child</button></div>`)
 
   document.getElementById('child').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app"><button id="parent">Parent</button><button id="child">Child updated</button></div>`)
 
   document.getElementById('parent').click()
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
     .toEqual(`<div id="app"><button id="parent">Parent updated</button><button id="child">Child updated</button></div>`)
   
@@ -193,8 +185,90 @@ test('update child props when parent state updates', async () => {
     .toEqual(`<div id="app"><div id="child">original</div></div>`)
 
   parent.foo = 'updated'
-  await Nuro.afterUpdate()
   expect(document.getElementById('app').outerHTML)
   .toEqual(`<div id="app"><div id="child">updated</div></div>`)
   
+})
+
+test('calling $update directly', async () => {
+  document.body.innerHTML = ''
+
+  let childRenderCount = 0
+  let parentRenderCount = 0
+  
+  class Child {
+    render($) {
+      childRenderCount++
+      return $('div', {id: 'child'}, [
+        this.props.foo
+      ])
+    }
+  }
+  class Parent {
+    foo = 'original'
+    render($) {
+      parentRenderCount++
+      return $('div', {id: 'app'}, [
+        $(Child, {foo: this.foo})
+      ])
+    }
+  }
+  let parent = Nuro.mount(Parent)
+
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><div id="child">original</div></div>`)
+  expect(parentRenderCount).toEqual(1)
+  expect(childRenderCount).toEqual(1)
+
+  parent.$update()
+  expect(parentRenderCount).toEqual(2)
+  expect(childRenderCount).toEqual(2)
+
+  parent.foo = 'updated'
+  expect(document.getElementById('app').outerHTML)
+  .toEqual(`<div id="app"><div id="child">updated</div></div>`)
+  expect(parentRenderCount).toEqual(3)
+  expect(childRenderCount).toEqual(3)
+  
+})
+
+test('calling $update with new data', async () => {
+  document.body.innerHTML = ''
+
+  let childRenderCount = 0
+  let parentRenderCount = 0
+  
+  class Child {
+    render($) {
+      childRenderCount++
+      return $('div', {id: 'child'}, [
+        this.props.foo
+      ])
+    }
+  }
+  class Parent {
+    foo = 'original foo'
+    bar = 'original bar'
+    render($) {
+      parentRenderCount++
+      return $('div', {id: 'app'}, [
+        $(Child, {foo: this.foo + ' ' + this.bar})
+      ])
+    }
+  }
+  let parent = Nuro.mount(Parent)
+
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><div id="child">original foo original bar</div></div>`)
+  expect(parentRenderCount).toEqual(1)
+  expect(childRenderCount).toEqual(1)
+
+  parent.$update({
+    foo: 'updated foo',
+    bar: 'updated bar'
+  })
+  expect(parentRenderCount).toEqual(2)
+  expect(childRenderCount).toEqual(2)
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><div id="child">updated foo updated bar</div></div>`)
 })

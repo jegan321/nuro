@@ -49,7 +49,6 @@ test('todo list', async () => {
     .toBe(0)
 
   app.tasks.push({desc: 'task one', completed: true}, {desc: 'task two', completed: false})
-  await Nuro.afterUpdate()
   expect(document.querySelector('#app h1').innerHTML)
     .toBe('Todo List for John')
   expect(document.querySelector('#app p'))
@@ -155,7 +154,6 @@ test('nested component with $if', async () => {
     .toEqual(`<h1>Title</h1><p>Hello</p>`)
 
   app.show = false
-  await Nuro.afterUpdate()
 
   expect(document.querySelector('#app').innerHTML)
     .toEqual(`<h1>Title</h1>`)
