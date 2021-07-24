@@ -401,6 +401,14 @@ class DomPatcher {
     }
 }
 
+let updateIsPending = false;
+function setPendingUpdateFlag(newValue) {
+    updateIsPending = newValue;
+}
+function isUpdatePending() {
+    return updateIsPending;
+}
+
 function createComponentProxy(component) {
     return new Proxy(component, proxyHandler);
 }
@@ -437,18 +445,38 @@ function handleSet(obj, prop, value) {
     let component = getComponent(obj);
     if (prop === 'props') {
         component.$vnode.attrs = value;
+        component.$update();
     }
-    component.$update();
+    else {
+        requestComponentUpdate(component);
+    }
     return true;
 }
 function handleDelete(obj, prop) {
     delete obj[prop];
     let component = getComponent(obj);
-    component.$update();
+    requestComponentUpdate(component);
     return true;
 }
 function getComponent(obj) {
     return obj.$component != null ? obj.$component : obj;
+}
+// TODO: rename asyncComponentUpdate?
+// requestAsyncUpdate
+// debounceAsyncUpdate
+function requestComponentUpdate(component) {
+    // If there is a pending update, cancel it
+    if (component.$pendingUpdate) {
+        cancelAnimationFrame(component.$pendingUpdate);
+    }
+    // Defer the update so it runs at the next animation frame
+    // This minimizes the number of actual DOM updates when multiple
+    // data properties are changed
+    component.$pendingUpdate = requestAnimationFrame(() => {
+        component.$update();
+        setPendingUpdateFlag(false);
+    });
+    setPendingUpdateFlag(true);
 }
 
 function callHook(component, hookName) {
@@ -717,14 +745,6 @@ function applyMixins(component) {
     });
 }
 
-let updateIsPending = false;
-function setPendingUpdateFlag(newValue) {
-    updateIsPending = newValue;
-}
-function isUpdatePending() {
-    return updateIsPending;
-}
-
 let domPatcher = new DomPatcher(mountComponent, unmountComponent, setProps);
 function mountRootComponent(ComponentClass, element, props = {}) {
     if (!element) {
@@ -755,17 +775,7 @@ function mountComponent(ComponentClass, element, props, children, vOldNode) {
     component.props.children = children;
     let componentProxy = createComponentProxy(component);
     component.$update = function () {
-        // If there is a pending update, cancel it
-        if (component.$pendingUpdate) {
-            cancelAnimationFrame(component.$pendingUpdate);
-        }
-        // Defer the update so it runs at the next animation frame
-        // This minimizes the number of actual DOM updates when multiple
-        // data properties are changed
-        component.$pendingUpdate = requestAnimationFrame(() => {
-            updateComponent(component);
-        });
-        setPendingUpdateFlag(true);
+        updateComponent(component);
     };
     bindAllMethods(component, componentProxy, ComponentClass);
     callHook(componentProxy, 'beforeMount');
@@ -814,7 +824,6 @@ function callHookRecursively(element, hook) {
 }
 function updateComponent(component) {
     callHook(component, 'beforeRender');
-    setPendingUpdateFlag(false);
     let createElement = createElementFactory(component.includes);
     let newVNode = component.render(createElement);
     if (!newVNode.nodeType) {

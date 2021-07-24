@@ -71,18 +71,7 @@ export function mountComponent(
   let componentProxy = createComponentProxy(component)
 
   component.$update = function() {
-    // If there is a pending update, cancel it
-    if (component.$pendingUpdate) {
-      cancelAnimationFrame(component.$pendingUpdate)
-    }
-
-    // Defer the update so it runs at the next animation frame
-    // This minimizes the number of actual DOM updates when multiple
-    // data properties are changed
-    component.$pendingUpdate = requestAnimationFrame(() => {
-      updateComponent(component)
-    })
-    setPendingUpdateFlag(true)
+    updateComponent(component)
   }
 
   bindAllMethods(component, componentProxy, ComponentClass)
@@ -148,8 +137,6 @@ function callHookRecursively(element: Element, hook: string) {
 
 export function updateComponent(component: Component): Component {
   callHook(component, 'beforeRender')
-
-  setPendingUpdateFlag(false)
 
   let createElement = createElementFactory(component.includes)
 

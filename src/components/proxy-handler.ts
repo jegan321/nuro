@@ -1,6 +1,7 @@
 import { ComponentProxy } from '../api/component-proxy.js'
 import { Component } from '../api/component.js'
 import { isObject, isArray } from '../util/object-utils.js'
+import { setPendingUpdateFlag } from './pending-update-tracker.js'
 
 interface NestedState {
   [state: string]: any
@@ -48,18 +49,36 @@ function handleSet(obj: ComponentProxy, prop: string, value: any): boolean {
   let component = getComponent(obj)
   if (prop === 'props') {
     component.$vnode.attrs = value
+    component.$update()
+  } else {
+    requestAsyncUpdate(component)
   }
-  component.$update()
   return true
 }
 
 function handleDelete(obj: ComponentProxy, prop: string): boolean {
   delete obj[prop]
   let component = getComponent(obj)
-  component.$update()
+  requestAsyncUpdate(component)
   return true
 }
 
 function getComponent(obj: ProxiedObject): ComponentProxy {
   return obj.$component != null ? obj.$component : obj
+}
+
+function requestAsyncUpdate(component: Component) {
+  // If there is a pending update, cancel it
+  if (component.$pendingUpdate) {
+    cancelAnimationFrame(component.$pendingUpdate)
+  }
+
+  // Defer the update so it runs at the next animation frame
+  // This minimizes the number of actual DOM updates when multiple
+  // data properties are changed
+  component.$pendingUpdate = requestAnimationFrame(() => {
+    component.$update()
+    setPendingUpdateFlag(false)
+  })
+  setPendingUpdateFlag(true)
 }
