@@ -448,23 +448,20 @@ function handleSet(obj, prop, value) {
         component.$update();
     }
     else {
-        requestComponentUpdate(component);
+        requestAsyncUpdate(component);
     }
     return true;
 }
 function handleDelete(obj, prop) {
     delete obj[prop];
     let component = getComponent(obj);
-    requestComponentUpdate(component);
+    requestAsyncUpdate(component);
     return true;
 }
 function getComponent(obj) {
     return obj.$component != null ? obj.$component : obj;
 }
-// TODO: rename asyncComponentUpdate?
-// requestAsyncUpdate
-// debounceAsyncUpdate
-function requestComponentUpdate(component) {
+function requestAsyncUpdate(component) {
     // If there is a pending update, cancel it
     if (component.$pendingUpdate) {
         cancelAnimationFrame(component.$pendingUpdate);
