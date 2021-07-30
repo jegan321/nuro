@@ -5,7 +5,6 @@ export interface InjectedProps {
   props: Record<string, any>
   $element: Element
   $vnode: VNode
-  $pendingUpdate: number
   includes: Map<string, ComponentClass>
   render: Render
   $update: (newData?: Record<string, any>) => void

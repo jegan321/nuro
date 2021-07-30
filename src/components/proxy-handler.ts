@@ -21,9 +21,16 @@ const proxyHandler: ProxyHandler<ComponentProxy> = {
 
 function handleGet(obj: ProxiedObject, prop: string): unknown {
   let val = obj[prop]
+
   if (isObject(val) || isArray(val)) {
-    // If obj is the props object, don't wrap in Proxy
+    // If obj is the props object, don't wrap in proxy
     if (prop === 'props' && !obj.$component) {
+      return val
+    }
+
+    // If property starts with $ then it is an injected property from the framework or plugins
+    // and should not be wrapped in a proxy
+    if (prop.startsWith('$')) {
       return val
     }
 
@@ -39,7 +46,7 @@ function handleGet(obj: ProxiedObject, prop: string): unknown {
     }
     return new Proxy(val, proxyHandler)
   } else {
-    return obj[prop]
+    return val
   }
 }
 

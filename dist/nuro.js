@@ -412,8 +412,13 @@ const proxyHandler = {
 function handleGet(obj, prop) {
     let val = obj[prop];
     if (isObject(val) || isArray(val)) {
-        // If obj is the props object, don't wrap in Proxy
+        // If obj is the props object, don't wrap in proxy
         if (prop === 'props' && !obj.$component) {
+            return val;
+        }
+        // If property starts with $ then it is an injected property from the framework or plugins
+        // and should not be wrapped in a proxy
+        if (prop.startsWith('$')) {
             return val;
         }
         // Pass on the ref to component to nested state
@@ -429,7 +434,7 @@ function handleGet(obj, prop) {
         return new Proxy(val, proxyHandler);
     }
     else {
-        return obj[prop];
+        return val;
     }
 }
 function handleSet(obj, prop, value) {
