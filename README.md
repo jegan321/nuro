@@ -219,7 +219,7 @@ Used to easily toggle classes on and off. The value is an object where the prope
 class ActivateButton {
   selected = false
   template = `
-    <button $class="{active: selected} @click="()=>selected=true">
+    <button $class="{active: selected}" @click="()=>selected=true">
       Activate
     </button>
   `
