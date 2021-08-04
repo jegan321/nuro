@@ -132,7 +132,9 @@
                 }
                 else {
                     // Same component already exists here so update props
-                    return node => this.domPatcher.setComponentPropsOnNode(node, vNewNode.attrs);
+                    const props = vNewNode.attrs;
+                    props.children = vNewNode.children;
+                    return node => this.domPatcher.setComponentPropsOnNode(node, props);
                 }
             }
             if (vOldNode.tag !== vNewNode.tag) {

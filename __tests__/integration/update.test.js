@@ -190,6 +190,35 @@ test('update child props when parent state updates', async () => {
   
 })
 
+test('update props.children when parent state updates', async () => {
+  document.body.innerHTML = ''
+  
+  class Child {
+    render($) {
+      return $('div', {id: 'child'}, this.props.children)
+    }
+  }
+  class Parent {
+    foo = 'original'
+    render($) {
+      return $('div', {id: 'app'}, [
+        $(Child, {foo: this.foo}, [
+          this.foo
+        ])
+      ])
+    }
+  }
+  let parent = Nuro.mount(Parent)
+
+  expect(document.getElementById('app').outerHTML)
+    .toEqual(`<div id="app"><div id="child">original</div></div>`)
+
+  parent.foo = 'updated'
+  expect(document.getElementById('app').outerHTML)
+  .toEqual(`<div id="app"><div id="child">updated</div></div>`)
+  
+})
+
 test('calling $update directly', async () => {
   document.body.innerHTML = ''
 
