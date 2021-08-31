@@ -1,6 +1,6 @@
 {
   "name": "nuro",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Lightweight, reactive, component-based UI framework",
   "main": "./dist/nuro.js",
   "module": "./compiled/index.js",
