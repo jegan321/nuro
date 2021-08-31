@@ -131,7 +131,7 @@ export class DomPatcher {
         } else {
           throw new NuroError('Event handler must be a function')
         }
-      } else {
+      } else if (node.getAttribute(attrName) !== attrValue) {
         node.setAttribute(attrName, attrValue)
       }
     }
