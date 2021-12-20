@@ -315,7 +315,7 @@ includes = {
 ```
 Or register a component globally so it can be included in all other components in your app:
 ```js
-Nuro.include('my-button', class {
+Nuro.register('my-button', class {
   template = `<button class="my-button">{{props.text}}</button>`
 })
 ```

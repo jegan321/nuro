@@ -28,12 +28,22 @@ export interface GlobalAPI {
   compileTemplate: CompileTemplate
 
   /**
+   * @deprecated since version 0.5.4. Use Nuro.register() instead
+   *
    * Allows the given component to be referenced from any template inside the application
    * without using the includes object
    * @param componentName The name of the tag used in the template to reference the component
    * @param ComponentClass The component to include
    */
   include: Include
+
+  /**
+   * Allows the given component to be referenced from any template inside the application
+   * without using the includes object
+   * @param componentName The name of the tag used in the template to reference the component
+   * @param ComponentClass The component to include
+   */
+  register: Register
 
   /**
    * Adds properties to all component instances created by Nuro
@@ -63,6 +73,10 @@ interface CompileTemplate {
 }
 
 interface Include {
+  (componentName: string, ComponentClass: ComponentClass): void
+}
+
+interface Register {
   (componentName: string, ComponentClass: ComponentClass): void
 }
 

@@ -704,7 +704,7 @@ function isLetter(character) {
 }
 
 const globalIncludes = new Map();
-function include(componentName, ComponentClass) {
+function register(componentName, ComponentClass) {
     globalIncludes.set(camelCaseToKebabCase(componentName), ComponentClass);
 }
 
@@ -848,7 +848,8 @@ const globalAPI = {
     mount: mountRootComponent,
     unmount: unmountComponent,
     compileTemplate: compileTemplate,
-    include: include,
+    include: register,
+    register: register,
     mixin: addMixin,
     install: installPlugin
 };

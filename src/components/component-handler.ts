@@ -16,7 +16,7 @@ import { callHook } from './hooks.js'
 import { mapVNode } from '../dom/map-vnode.js'
 import { NuroError } from '../util/nuro-error.js'
 import { compileTemplate } from './template-compiler.js'
-import { globalIncludes } from './includes.js'
+import { globalIncludes } from './register.js'
 import { camelCaseToKebabCase } from '../util/string-utils.js'
 import { applyMixins } from './mixins.js'
 

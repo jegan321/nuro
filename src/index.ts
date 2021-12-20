@@ -1,6 +1,6 @@
 import { mountRootComponent, unmountComponent } from './components/component-handler.js'
 import { compileTemplate } from './components/template-compiler.js'
-import { include } from './components/includes.js'
+import { register } from './components/register.js'
 import { GlobalAPI } from './api/global-api.js'
 import { installPlugin } from './components/plugins.js'
 import { addMixin } from './components/mixins.js'
@@ -14,7 +14,8 @@ const globalAPI: GlobalAPI = {
   mount: mountRootComponent,
   unmount: unmountComponent,
   compileTemplate: compileTemplate,
-  include: include,
+  include: register,
+  register: register,
   mixin: addMixin,
   install: installPlugin
 }
